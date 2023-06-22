@@ -16,6 +16,8 @@
 		52AF6FD92A445B5B0060758E /* TodoListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FD82A445B5B0060758E /* TodoListTests.swift */; };
 		52AF6FE32A445B5B0060758E /* TodoListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FE22A445B5B0060758E /* TodoListUITests.swift */; };
 		52AF6FE52A445B5B0060758E /* TodoListUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FE42A445B5B0060758E /* TodoListUITestsLaunchTests.swift */; };
+		52AF6FF22A445CF80060758E /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FF12A445CF80060758E /* TodoItem.swift */; };
+		52AF6FF42A445D740060758E /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FF32A445D740060758E /* FileCache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		52AF6FDE2A445B5B0060758E /* TodoListUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoListUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AF6FE22A445B5B0060758E /* TodoListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListUITests.swift; sourceTree = "<group>"; };
 		52AF6FE42A445B5B0060758E /* TodoListUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		52AF6FF12A445CF80060758E /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		52AF6FF32A445D740060758E /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 				52AF6FCA2A445B5B0060758E /* Assets.xcassets */,
 				52AF6FCC2A445B5B0060758E /* LaunchScreen.storyboard */,
 				52AF6FCF2A445B5B0060758E /* Info.plist */,
+				52AF6FF12A445CF80060758E /* TodoItem.swift */,
+				52AF6FF32A445D740060758E /* FileCache.swift */,
 			);
 			path = TodoList;
 			sourceTree = "<group>";
@@ -260,6 +266,8 @@
 			files = (
 				52AF6FC62A445B5A0060758E /* ViewController.swift in Sources */,
 				52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */,
+				52AF6FF22A445CF80060758E /* TodoItem.swift in Sources */,
+				52AF6FF42A445D740060758E /* FileCache.swift in Sources */,
 				52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
