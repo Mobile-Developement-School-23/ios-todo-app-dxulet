@@ -8,13 +8,8 @@
 import UIKit
 
 protocol AddTodoViewDelegate: AnyObject {
-    func cancelButtonTapped()
-    func saveButtonTapped()
-    func deleteButtonTapped()
     func didChangePriority(_ priority: Priority)
     func didChangeDeadline(_ deadline: Date)
-    func didChangeDeadlineSwitcher(_ isOn: Bool)
-    func didChangeText(_ text: String)
 }
 
 class AddTodoView: UIView {
@@ -37,46 +32,14 @@ class AddTodoView: UIView {
     }
     
     weak var delegate: AddTodoViewDelegate?
+    private let item: TodoItem?
+    
     
     // MARK: - UI Elements
     
-    private lazy var topBar = makeTopBar()
-    private lazy var contentStackView = makeContentStackView()
     private lazy var containerView = makeContainerView()
-    private lazy var customTextView = makeTextView()
     private lazy var priorityView = makePriorityView()
     private lazy var deadlineView = makeDeadlineView()
-    
-    private let scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .clear
-        scrollView.showsVerticalScrollIndicator = false
-        return scrollView
-    }()
-    
-    private let cancelButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(Constants.cancelTitle, for: .normal)
-        return button
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = Constants.titleText
-        label.font = GlobalConstants.headline
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let saveButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(Constants.saveTitle, for: .normal)
-        return button
-    }()
     
     private let deadlinePicker: UIDatePicker = {
         let picker = UIDatePicker()
@@ -89,65 +52,33 @@ class AddTodoView: UIView {
         return picker
     }()
     
-    private let deleteButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(Constants.deleteTitle, for: .normal)
-        button.layer.cornerRadius = GlobalConstants.cornerRadius
-        button.layer.masksToBounds = true
-        button.backgroundColor = .white
-        button.setTitleColor(.systemGray2, for: .disabled)
-        button.setTitleColor(.red, for: .normal)
-        button.isEnabled = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
     // MARK: - Init
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(item: TodoItem?) {
+        self.item = item
+        super.init(frame: .zero)
         
         addSubviews()
         configureUI()
     }
     
     private func addSubviews() {
-        addSubview(topBar)
-        addSubview(scrollView)
-        scrollView.addSubview(contentStackView)
+        addSubview(containerView)
     }
     
     private func configureUI() {
         backgroundColor = UIColor(named: "BackColor")
         
         NSLayoutConstraint.activate([
-            topBar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            topBar.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                            constant: Constants.topBarInsets.left),
-            topBar.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
-                                                   constant: Constants.topBarInsets.right),
-            topBar.heightAnchor.constraint(equalToConstant: Constants.topBarHeight),
             
-            scrollView.topAnchor.constraint(equalTo: topBar.bottomAnchor, constant: Constants.scrollViewInsets.top),
-            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor,
-                                                constant: Constants.scrollViewInsets.left),
-            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,
-                                                 constant: Constants.scrollViewInsets.right),
-            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: widthAnchor),
             
-            contentStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            contentStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            contentStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            customTextView.heightAnchor.constraint(equalToConstant: Constants.textViewHeight),
             priorityView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight),
-            deadlineView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight),
-            
-            deleteButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight)
-        
+            deadlineView.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight)
         ])
     }
     
@@ -167,27 +98,6 @@ class AddTodoView: UIView {
     
     // MARK: - Lifecycle
     
-    private func makeTopBar() -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: [
-            cancelButton,
-            titleLabel,
-            saveButton
-        ])
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }
-    
-    private func makeTextView() -> CustomTextView {
-        let textView = CustomTextView()
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.isScrollEnabled = false
-        textView.customDelegate = self
-        return textView
-    }
-    
     private func makePriorityView() -> PriorityView {
         let view = PriorityView()
         view.delegate = self
@@ -198,18 +108,6 @@ class AddTodoView: UIView {
         let view = DeadlineCalendarView()
         view.delegate = self
         return view
-    }
-    
-    private func makeContentStackView() -> UIStackView {
-        let stackView = UIStackView(arrangedSubviews: [
-            customTextView,
-            containerView,
-            deleteButton
-        ])
-        stackView.axis = .vertical
-        stackView.spacing = Constants.contentSpacing
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
     }
     
     private func makeContainerView() -> UIView {
@@ -241,14 +139,6 @@ class AddTodoView: UIView {
 
 }
 
-// MARK: - CustomTextViewDelegate
-
-extension AddTodoView: CustomTextViewDelegate {
-    func didChangeText(_ text: String) {
-        delegate?.didChangeText(text)
-    }
-}
-
 // MARK: - PriorityViewDelegate
 
 extension AddTodoView: PriorityViewDelegate {
@@ -261,11 +151,11 @@ extension AddTodoView: PriorityViewDelegate {
 
 extension AddTodoView: DeadlineCalendarViewDelegate {
     func deadlineSwitcherChanged(_ isOn: Bool) {
-        delegate?.didChangeDeadlineSwitcher(isOn)
+        
     }
     
     func deadlineButtonTapped() {
-        delegate?.didChangeDeadline(deadlinePicker.date)
+        
     }
 }
 
