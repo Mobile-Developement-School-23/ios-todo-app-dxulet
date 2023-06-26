@@ -32,6 +32,7 @@ class FileCache {
         }
         
         let path = directory.appendingPathComponent("\(file).json")
+        print(path)
         let serializedItems = items.map { _, item in item.json }
         let data = try JSONSerialization.data(withJSONObject: serializedItems, options: [])
         try data.write(to: path)

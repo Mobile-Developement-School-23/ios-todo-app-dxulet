@@ -17,18 +17,10 @@ class AddTodoView: UIView {
     // MARK: - Properties
     
     private enum Constants {
-        static let cancelTitle = "Отменить"
-        static let titleText = "Дело"
-        static let saveTitle = "Сохранить"
-        static let deleteTitle = "Удалить"
-        static let contentSpacing: CGFloat = 16
-        static let scrollViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: -16)
-        static let topBarHeight: CGFloat = 50
-        static let textViewHeight: CGFloat = 120
         static let containerViewHeight: CGFloat = 60
-        static let topBarInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
-        static let topBarSpacing: CGFloat = 10
         static let cornerRadius: CGFloat = 16
+        static let backColor = "BackColor"
+        static let nextDay = Date.now.addingTimeInterval(86400)
     }
     
     weak var delegate: AddTodoViewDelegate?
@@ -40,17 +32,7 @@ class AddTodoView: UIView {
     private lazy var containerView = makeContainerView()
     private lazy var priorityView = makePriorityView()
     private lazy var deadlineView = makeDeadlineView()
-    
-    private let deadlinePicker: UIDatePicker = {
-        let picker = UIDatePicker()
-        picker.datePickerMode = .date
-        picker.preferredDatePickerStyle = .inline
-        picker.addTarget(self, action: #selector(deadlinePickerTapped(sender:)), for: .valueChanged)
-        picker.isHidden = true
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        picker.datePickerMode = .dateAndTime
-        return picker
-    }()
+    private lazy var deadlinePicker = makeDeadlinePicker()
     
     // MARK: - Init
     
@@ -67,7 +49,7 @@ class AddTodoView: UIView {
     }
     
     private func configureUI() {
-        backgroundColor = UIColor(named: "BackColor")
+        backgroundColor = UIColor(named: Constants.backColor)
         
         NSLayoutConstraint.activate([
             
@@ -89,11 +71,8 @@ class AddTodoView: UIView {
     // MARK: - Actions
     
     @objc func deadlinePickerTapped(sender: UIDatePicker) {
-        print(sender.date)
-    }
-    
-    @objc func deleteButtonTapped() {
-        print("deleteButtonTapped")
+        delegate?.didChangeDeadline(sender.date)
+        deadlineView.setDeadlineButtonTitle(sender.date)
     }
     
     // MARK: - Lifecycle
@@ -108,6 +87,17 @@ class AddTodoView: UIView {
         let view = DeadlineCalendarView()
         view.delegate = self
         return view
+    }
+    
+    private func makeDeadlinePicker() -> UIDatePicker {
+        let picker = UIDatePicker()
+        picker.datePickerMode = .date
+        picker.backgroundColor = .white
+        picker.preferredDatePickerStyle = .inline
+        picker.addTarget(self, action: #selector(deadlinePickerTapped(sender:)), for: .valueChanged)
+        picker.isHidden = true
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        return picker
     }
     
     private func makeContainerView() -> UIView {
@@ -150,12 +140,36 @@ extension AddTodoView: PriorityViewDelegate {
 // MARK: - DeadlineCalendarViewDelegate
 
 extension AddTodoView: DeadlineCalendarViewDelegate {
+    
     func deadlineSwitcherChanged(_ isOn: Bool) {
-        
+        if isOn {
+            UIView.animate(withDuration: 0.3) {
+                self.deadlinePicker.isHidden = false
+            }
+            
+            deadlinePicker.setDate(Constants.nextDay, animated: true)
+            deadlineView.updateLayoutSwitch(for: Constants.nextDay)
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.deadlinePicker.isHidden = true
+            }
+            
+            deadlineView.updateLayoutSwitch(for: nil)
+        }
     }
     
     func deadlineButtonTapped() {
+        if deadlinePicker.isHidden {
+            UIView.animate(withDuration: 0.3) {
+                self.deadlinePicker.isHidden = false
+            }
+        } else {
+            UIView.animate(withDuration: 0.3) {
+                self.deadlinePicker.isHidden = true
+            }
+        }
         
+        deadlinePicker.setDate(Constants.nextDay, animated: true)
     }
 }
 

@@ -19,8 +19,8 @@ class DeadlineCalendarView: UIView {
     private enum LocalConstants {
         static let deadlineText = "Сделать до"
         static let stackViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: -16, right: 0)
-        static let trailingInset = CGFloat(-16)
-        static let height = CGFloat(0.5)
+        static let trailingInset: CGFloat = -16
+        static let height: CGFloat = 0.5
     }
     
     weak var delegate: DeadlineCalendarViewDelegate?
@@ -51,7 +51,7 @@ class DeadlineCalendarView: UIView {
     
     private let deadlineButton: UIButton = {
         let button = UIButton()
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = GlobalConstants.footnote
         button.isHidden = true
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -105,7 +105,7 @@ class DeadlineCalendarView: UIView {
     // MARK: - Selectors
     
     @objc private func switcherChanged(_ switcher: UISwitch) {
-        
+        delegate?.deadlineSwitcherChanged(switcher.isOn)
     }
     
     @objc private func deadlineButtonTapped() {
@@ -121,15 +121,18 @@ class DeadlineCalendarView: UIView {
         deadlineButton.setTitle(dateString, for: .normal)
     }
     
-    func updateLayoutForIsOn(for date: Date) {
-        divider.isHidden = false
+    func updateLayoutSwitch(for date: Date?) {
+        guard let date = date else {
+            deadlineSwitcher.isOn = false
+            deadlineButton.isHidden = true
+            divider.isHidden = true
+            return
+        }
+        
+        deadlineSwitcher.isOn = true
         deadlineButton.isHidden = false
+        divider.isHidden = false
         setDeadlineButtonTitle(date)
-    }
-    
-    func updateLayoutForIsOff() {
-        divider.isHidden = true
-        deadlineButton.isHidden = true
     }
     
     func setSwitcherIsOn(_ isOn: Bool) {

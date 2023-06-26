@@ -1,11 +1,15 @@
 //
-//  DynamicTextView.swift
-//  ToDoList App
+//  CustomTextView.swift
+//  TodoList
 //
-//  Created by Adlet Zhantassov on 23.06.2023.
+//  Created by Daulet Ashikbayev on 23.06.2023.
 //
 
 import UIKit
+
+protocol CustomTextViewDelegate: AnyObject {
+    func didChangeText(_ text: String)
+}
 
 class CustomTextView: UITextView {
     
@@ -15,6 +19,8 @@ class CustomTextView: UITextView {
         static let placeholder = "Что надо сделать?"
         static let placeholderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
     }
+    
+    weak var customDelegate: CustomTextViewDelegate?
 
     override init(frame: CGRect, textContainer: NSTextContainer?) {
         super.init(frame: frame, textContainer: textContainer)
@@ -35,22 +41,12 @@ class CustomTextView: UITextView {
         isScrollEnabled = false
         text = Constants.placeholder
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        invalidateIntrinsicContentSize()
-    }
-    
-    override func sizeThatFits(_ size: CGSize) -> CGSize {
-        var newSize = super.sizeThatFits(size)
-        newSize.width = size.width
-        return newSize
-    }
 }
 
 extension CustomTextView: UITextViewDelegate {
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
         if textView.text == Constants.placeholder {
             textView.text = nil
             textView.textColor = .black
@@ -58,6 +54,8 @@ extension CustomTextView: UITextViewDelegate {
     }
         
     func textViewDidEndEditing(_ textView: UITextView) {
+        customDelegate?.didChangeText(textView.text)
+        
         if textView.text.isEmpty {
             textView.text = Constants.placeholder
             textView.textColor = Constants.placeholderColor

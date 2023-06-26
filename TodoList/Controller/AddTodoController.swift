@@ -12,12 +12,16 @@ class AddTodoController: UIViewController {
     // MARK: - Properties
     
     var didSaveItem: ((TodoItem) -> Void)?
+    private var fileCache: FileCache = FileCache()
     
     private enum Constants {
         static let cancelTitle = "Отменить"
         static let titleText = "Дело"
         static let saveTitle = "Сохранить"
         static let deleteTitle = "Удалить"
+        static let alertTitle = "Успех"
+        static let alertMessage = "Новое дело успешно сохранено"
+        static let alertActionTitle = "Ок"
         static let backgroundColor = UIColor(named: "BackColor")
         static let contentSpacing: CGFloat = 16
         static let scrollViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: -16)
@@ -38,7 +42,6 @@ class AddTodoController: UIViewController {
     init(item: TodoItem? = nil) {
         self.item = item
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -54,9 +57,10 @@ class AddTodoController: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.backgroundColor = .clear
+        scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
     
@@ -81,6 +85,7 @@ class AddTodoController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Constants.saveTitle, for: .normal)
+        button.titleLabel?.font = GlobalConstants.headline
         button.setTitleColor(.systemBlue, for: .normal)
         button.setTitleColor(.systemGray2, for: .disabled)
         button.isEnabled = false
@@ -108,6 +113,8 @@ class AddTodoController: UIViewController {
         super.viewDidLoad()
         
         setupView()
+        setupKeyboard()
+        setupObservers()
     }
     
     // MARK: - Private Methods
@@ -118,6 +125,8 @@ class AddTodoController: UIViewController {
         view.addSubview(topBar)
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
+        
+        view.keyboardLayoutGuide.followsUndockedKeyboard = true
         
         NSLayoutConstraint.activate([
             topBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -136,13 +145,29 @@ class AddTodoController: UIViewController {
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: Constants.stackViewWidth),
             
-            textView.heightAnchor.constraint(equalToConstant: Constants.textViewHeight),
+            textView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textViewHeight),
             deleteButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight)
         ])
     }
     
+    private func setupObservers() {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(keyboardWillShow),
+                name: UIResponder.keyboardWillShowNotification,
+                object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(keyboardWillHide),
+                name: UIResponder.keyboardWillHideNotification,
+                object: nil
+            )
+        }
+    
     private func makeTextView() -> CustomTextView {
         let textView = CustomTextView()
+        textView.customDelegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }
@@ -183,26 +208,86 @@ class AddTodoController: UIViewController {
     // MARK: - Selectors
     
     @objc private func topBarButtonTapped(selector: UIButton) {
+        let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessage, preferredStyle: .alert)
+        
         switch selector {
         case cancelButton:
-            print("cancel button tapped")
-//            dismiss(animated: true)
+            print("Cancel button tapped")
+            // dismiss(animated: true)
         case saveButton:
             guard let text = presentationModel.text else { return }
             let todoItem = TodoItem(text: text, priority: presentationModel.priority, deadline: presentationModel.dueDate, isCompleted: false, createdAt: Date())
-            didSaveItem?(todoItem)
-//            dismiss(animated: true)
+            fileCache.add(todoItem)
+            
+            do {
+                try fileCache.save(to: "Items")
+                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
+                present(alert, animated: true)
+            } catch let error as FileCacheError {
+                switch error {
+                // TODO: - Localize
+                case .notFound:
+                    alert.title = "File Not Found"
+                    alert.message = "The specified file was not found."
+                case .notSupported:
+                    alert.title = "File Not Supported"
+                    alert.message = "The file format is not supported."
+                case .failedToRead:
+                    alert.title = "Failed to Read File"
+                    alert.message = "An error occurred while reading the file."
+                case .failedToWrite:
+                    alert.title = "Failed to Write File"
+                    alert.message = "An error occurred while writing the file."
+                }
+                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
+                present(alert, animated: true)
+            } catch {
+                // Handle other errors
+                alert.title = "Error"
+                alert.message = "An unknown error occurred."
+                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
+                present(alert, animated: true)
+            }
         default:
             break
         }
     }
+
+
     
     @objc private func deleteButtonTapped() {
         //        presentationModel.deleteItem()
         //        dismiss(animated: true)
     }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard
+            let userInfo = notification.userInfo,
+            let nsValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        else {
+            return
+        }
+        
+        let keyboardSize = nsValue.cgRectValue
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+        scrollView.contentInset = contentInsets
+    }
+    
+    @objc private func keyboardWillHide() {
+        let contentInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInsets
+    }
 }
 
+// MARK: - CustomTextViewDelegate
+
+extension AddTodoController: CustomTextViewDelegate {
+    
+    func didChangeText(_ text: String) {
+        presentationModel.text = text
+        saveButton.isEnabled = !text.isEmpty
+    }
+}
 // MARK: - AddTodoViewDelegate
 
 extension AddTodoController: AddTodoViewDelegate {

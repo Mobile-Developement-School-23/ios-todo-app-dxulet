@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3482A4989CC00C8B2FD /* Extensions.swift */; };
 		52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC12A445B5A0060758E /* AppDelegate.swift */; };
 		52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC32A445B5A0060758E /* SceneDelegate.swift */; };
 		52AF6FCB2A445B5B0060758E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52AF6FCA2A445B5B0060758E /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		527DF3482A4989CC00C8B2FD /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		52AF6FBE2A445B5A0060758E /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AF6FC12A445B5A0060758E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52AF6FC32A445B5A0060758E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +90,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		527DF3472A48ACEB00C8B2FD /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		52AF6FB52A445B5A0060758E = {
 			isa = PBXGroup;
 			children = (
@@ -111,11 +120,12 @@
 		52AF6FC02A445B5A0060758E /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
+				527DF3472A48ACEB00C8B2FD /* Data */,
 				52AF70012A449A1D0060758E /* App */,
 				52AF70002A449A090060758E /* Model */,
 				52AF6FFF2A449A030060758E /* Controller */,
 				52AF6FFD2A4499F70060758E /* Views */,
-				52AF6FFB2A44999E0060758E /* Extensions */,
+				52AF6FFB2A44999E0060758E /* Helpers */,
 				52AF6FFA2A44998B0060758E /* Utils */,
 				52AF6FCA2A445B5B0060758E /* Assets.xcassets */,
 				52AF6FCF2A445B5B0060758E /* Info.plist */,
@@ -144,16 +154,17 @@
 			isa = PBXGroup;
 			children = (
 				52AF6FF32A445D740060758E /* FileCache.swift */,
-				52AF70082A44A1A90060758E /* GlobalConstants.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		52AF6FFB2A44999E0060758E /* Extensions */ = {
+		52AF6FFB2A44999E0060758E /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				52AF70082A44A1A90060758E /* GlobalConstants.swift */,
+				527DF3482A4989CC00C8B2FD /* Extensions.swift */,
 			);
-			path = Extensions;
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		52AF6FFD2A4499F70060758E /* Views */ = {
@@ -329,6 +340,7 @@
 				52AF700F2A466F5F0060758E /* AddTodoPresentationModel.swift in Sources */,
 				52AF70032A449BAC0060758E /* AddTodoController.swift in Sources */,
 				52AF6FF42A445D740060758E /* FileCache.swift in Sources */,
+				527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */,
 				52AF700D2A45C2F60060758E /* CustomTextView.swift in Sources */,
 				52AF70092A44A1A90060758E /* GlobalConstants.swift in Sources */,
 				52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */,
