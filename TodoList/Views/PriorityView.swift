@@ -23,7 +23,7 @@ final class PriorityView: UIView {
         static let highPriorityImage = "high"
         static let segmentedControlWidth: CGFloat = 48
         static let dividerHeight: CGFloat = 0.5
-        static let dividerInsetInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: -10)
+        static let dividerInsetInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
     }
     
     weak var delegate: PriorityViewDelegate?
@@ -62,12 +62,7 @@ final class PriorityView: UIView {
         return segmentedControl
     }()
     
-    private let dividerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = GlobalConstants.dividerColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    private let dividerView = DividerView()
     
     // MARK: - Init
     
@@ -82,7 +77,6 @@ final class PriorityView: UIView {
     }
     
     func configureUI() {
-        backgroundColor = .white
         addSubviews()
         addConstraints()
     }
@@ -102,10 +96,10 @@ final class PriorityView: UIView {
             prioritySegmentedControl.centerYAnchor.constraint(equalTo: centerYAnchor),
             prioritySegmentedControl.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -GlobalConstants.padding),
             
-            dividerView.heightAnchor.constraint(equalToConstant: LocalConstants.dividerHeight),
             dividerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LocalConstants.dividerInsetInsets.left),
             dividerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: LocalConstants.dividerInsetInsets.right),
-            dividerView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            dividerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: LocalConstants.dividerHeight)
         ])
     }
     

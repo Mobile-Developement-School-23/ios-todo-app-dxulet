@@ -20,12 +20,15 @@ class DeadlineCalendarView: UIView {
         static let deadlineText = "Сделать до"
         static let stackViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: -16, right: 0)
         static let trailingInset: CGFloat = -16
-        static let height: CGFloat = 0.5
+        static let dividerHeight: CGFloat = 0.5
+        static let dividerInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
     }
     
     weak var delegate: DeadlineCalendarViewDelegate?
     
     // MARK: Lifecycle
+    
+    private lazy var dividerView = makeDividerView()
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -59,13 +62,6 @@ class DeadlineCalendarView: UIView {
         return button
     }()
     
-    private let divider: UIView = {
-        let view = UIView()
-        view.backgroundColor = .systemGray5
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -79,12 +75,18 @@ class DeadlineCalendarView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func makeDividerView() -> DividerView {
+        let view = DividerView()
+        view.isHidden = true
+        return view
+    }
+    
     private func setupSubviews() {
         addSubview(deadlineSwitcher)
         addSubview(stackView)
         stackView.addArrangedSubview(deadlineLabel)
         stackView.addArrangedSubview(deadlineButton)
-        addSubview(divider)
+        addSubview(dividerView)
     }
     
     private func setupConstraints() {
@@ -95,10 +97,10 @@ class DeadlineCalendarView: UIView {
             deadlineSwitcher.centerYAnchor.constraint(equalTo: centerYAnchor),
             deadlineSwitcher.trailingAnchor.constraint(equalTo: trailingAnchor, constant: LocalConstants.trailingInset),
             
-            divider.leadingAnchor.constraint(equalTo: leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: trailingAnchor),
-            divider.bottomAnchor.constraint(equalTo: bottomAnchor),
-            divider.heightAnchor.constraint(equalToConstant: LocalConstants.height)
+            dividerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LocalConstants.dividerInsets.left),
+            dividerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: LocalConstants.dividerInsets.right),
+            dividerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            dividerView.heightAnchor.constraint(equalToConstant: LocalConstants.dividerHeight)
         ])
     }
     
@@ -109,7 +111,9 @@ class DeadlineCalendarView: UIView {
     }
     
     @objc private func deadlineButtonTapped() {
+
         delegate?.deadlineButtonTapped()
+        dividerView.isHidden.toggle()
     }
     
     // MARK: - Public
@@ -125,18 +129,11 @@ class DeadlineCalendarView: UIView {
         guard let date = date else {
             deadlineSwitcher.isOn = false
             deadlineButton.isHidden = true
-            divider.isHidden = true
             return
         }
         
         deadlineSwitcher.isOn = true
         deadlineButton.isHidden = false
-        divider.isHidden = false
         setDeadlineButtonTitle(date)
-    }
-    
-    func setSwitcherIsOn(_ isOn: Bool) {
-        deadlineSwitcher.isOn = isOn
-        delegate?.deadlineSwitcherChanged(isOn)
     }
 }

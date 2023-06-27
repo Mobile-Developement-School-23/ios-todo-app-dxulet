@@ -22,7 +22,6 @@ class AddTodoController: UIViewController {
         static let alertTitle = "Успех"
         static let alertMessage = "Новое дело успешно сохранено"
         static let alertActionTitle = "Ок"
-        static let backgroundColor = UIColor(named: "BackColor")
         static let contentSpacing: CGFloat = 16
         static let scrollViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: -16)
         static let topBarHeight: CGFloat = 50
@@ -30,8 +29,6 @@ class AddTodoController: UIViewController {
         static let containerViewHeight: CGFloat = 60
         static let topBarInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
         static let stackViewWidth: CGFloat = -32
-        static let topBarSpacing: CGFloat = 10
-        static let cornerRadius: CGFloat = 16
     }
     
     private let item: TodoItem?
@@ -67,6 +64,7 @@ class AddTodoController: UIViewController {
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.titleLabel?.font = GlobalConstants.body
         button.setTitle(Constants.cancelTitle, for: .normal)
         button.addTarget(self, action: #selector(topBarButtonTapped), for: .touchUpInside)
         return button
@@ -98,7 +96,6 @@ class AddTodoController: UIViewController {
         button.setTitle(Constants.deleteTitle, for: .normal)
         button.layer.cornerRadius = GlobalConstants.cornerRadius
         button.layer.masksToBounds = true
-        button.backgroundColor = .white
         button.setTitleColor(.systemGray2, for: .disabled)
         button.setTitleColor(.red, for: .normal)
         button.isEnabled = false
@@ -112,6 +109,12 @@ class AddTodoController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        do {
+            try fileCache.load(from: "Items")
+        } catch {
+            print(error)
+        }
+        
         setupView()
         setupKeyboard()
         setupObservers()
@@ -119,8 +122,18 @@ class AddTodoController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func setupColors() {
+        view.backgroundColor = Colors.backPrimary.color
+        textView.backgroundColor = Colors.backSecondary.color
+        titleLabel.textColor = Colors.labelPrimary.color
+        deleteButton.backgroundColor = Colors.backSecondary.color
+        [cancelButton, saveButton].forEach { $0.setTitleColor(Colors.colorBlue.color, for: .normal) }
+        saveButton.setTitleColor(Colors.labelTertiary.color, for: .disabled)
+    }
+    
     private func setupView() {
-        view.backgroundColor = Constants.backgroundColor
+        
+        setupColors()
         
         view.addSubview(topBar)
         view.addSubview(scrollView)
@@ -218,9 +231,8 @@ class AddTodoController: UIViewController {
             guard let text = presentationModel.text else { return }
             let todoItem = TodoItem(text: text, priority: presentationModel.priority, deadline: presentationModel.dueDate, isCompleted: false, createdAt: Date())
             fileCache.add(todoItem)
-            
             do {
-                try fileCache.save(to: "Items")
+                try fileCache.saveToJSONFile()
                 alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
                 present(alert, animated: true)
             } catch let error as FileCacheError {

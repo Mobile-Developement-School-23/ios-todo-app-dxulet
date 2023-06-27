@@ -18,9 +18,11 @@ class AddTodoView: UIView {
     
     private enum Constants {
         static let containerViewHeight: CGFloat = 60
+        static let dividerHeight: CGFloat = 0.5
         static let cornerRadius: CGFloat = 16
-        static let backColor = "BackColor"
         static let nextDay = Date.now.addingTimeInterval(86400)
+        static let dividerInsetInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
+        
     }
     
     weak var delegate: AddTodoViewDelegate?
@@ -49,7 +51,6 @@ class AddTodoView: UIView {
     }
     
     private func configureUI() {
-        backgroundColor = UIColor(named: Constants.backColor)
         
         NSLayoutConstraint.activate([
             
@@ -92,7 +93,7 @@ class AddTodoView: UIView {
     private func makeDeadlinePicker() -> UIDatePicker {
         let picker = UIDatePicker()
         picker.datePickerMode = .date
-        picker.backgroundColor = .white
+        picker.minimumDate = Constants.nextDay
         picker.preferredDatePickerStyle = .inline
         picker.addTarget(self, action: #selector(deadlinePickerTapped(sender:)), for: .valueChanged)
         picker.isHidden = true
@@ -102,10 +103,10 @@ class AddTodoView: UIView {
     
     private func makeContainerView() -> UIView {
         let containerView = UIView()
-        containerView.backgroundColor = .white
         containerView.layer.cornerRadius = Constants.cornerRadius
         containerView.clipsToBounds = true
         containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = Colors.backSecondary.color
         
         let stackView = UIStackView(arrangedSubviews: [
             priorityView,
@@ -118,6 +119,7 @@ class AddTodoView: UIView {
         containerView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
+            
             stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
@@ -126,7 +128,6 @@ class AddTodoView: UIView {
         
         return containerView
     }
-
 }
 
 // MARK: - PriorityViewDelegate
@@ -143,11 +144,9 @@ extension AddTodoView: DeadlineCalendarViewDelegate {
     
     func deadlineSwitcherChanged(_ isOn: Bool) {
         if isOn {
-            UIView.animate(withDuration: 0.3) {
-                self.deadlinePicker.isHidden = false
-            }
-            
+            delegate?.didChangeDeadline(Constants.nextDay)
             deadlinePicker.setDate(Constants.nextDay, animated: true)
+            
             deadlineView.updateLayoutSwitch(for: Constants.nextDay)
         } else {
             UIView.animate(withDuration: 0.3) {

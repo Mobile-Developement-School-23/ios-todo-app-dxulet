@@ -17,7 +17,6 @@ class CustomTextView: UITextView {
         static let cornerRadius: CGFloat = 16
         static let containerInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let placeholder = "Что надо сделать?"
-        static let placeholderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.3)
     }
     
     weak var customDelegate: CustomTextViewDelegate?
@@ -34,7 +33,7 @@ class CustomTextView: UITextView {
     private func setup() {
         delegate = self
         font = GlobalConstants.body
-        textColor = Constants.placeholderColor
+        textColor = Colors.labelTertiary.color
         textContainerInset = Constants.containerInset
         layer.cornerRadius = Constants.cornerRadius
         autocorrectionType = .no
@@ -49,7 +48,7 @@ extension CustomTextView: UITextViewDelegate {
         
         if textView.text == Constants.placeholder {
             textView.text = nil
-            textView.textColor = .black
+            textView.textColor = Colors.labelPrimary.color
         }
     }
         
@@ -58,7 +57,7 @@ extension CustomTextView: UITextViewDelegate {
         
         if textView.text.isEmpty {
             textView.text = Constants.placeholder
-            textView.textColor = Constants.placeholderColor
+            textView.textColor = Colors.labelTertiary.color
         }
     }
 }
