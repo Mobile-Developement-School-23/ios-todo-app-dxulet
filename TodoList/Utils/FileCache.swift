@@ -15,7 +15,15 @@ enum FileCacheError: Error {
 }
 
 class FileCache {
+    private enum Constants {
+        static let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    }
+    
     private(set) var items: [String: TodoItem] = [:]
+    
+    init() {
+        print(Constants.documentDirectory)
+    }
     
     func add(_ item: TodoItem) {
         items[item.id] = item
@@ -25,21 +33,24 @@ class FileCache {
         items[id] = nil
     }
     
-    func save(to file: String) throws {
-        let fileManager = FileManager.default
-        guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
-            throw FileCacheError.notFound
+    func saveToJSONFile() throws {
+        let fileURL = Constants.documentDirectory[0].appendingPathComponent("Items.json")
+        
+        guard
+            let jsonArray = items.values.map({ $0.json }) as? [Any],
+            let jsonData = try? JSONSerialization.data(
+                withJSONObject: jsonArray,
+                options: .prettyPrinted
+            )
+        else {
+            throw FileCacheError.failedToWrite
         }
         
-        let path = directory.appendingPathComponent("\(file).json")
-        let serializedItems = items.map { _, item in item.json }
-        let data = try JSONSerialization.data(withJSONObject: serializedItems, options: [])
-        try data.write(to: path)
+        try? jsonData.write(to: fileURL)
     }
     
     func load(from file: String) throws {
-        let fileManager = FileManager.default
-        guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        guard let directory = Constants.documentDirectory.first else {
             throw FileCacheError.notFound
         }
         

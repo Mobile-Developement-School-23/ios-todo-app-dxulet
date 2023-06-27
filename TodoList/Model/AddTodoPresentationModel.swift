@@ -11,7 +11,7 @@ struct AddTodoPresentationModel {
     
     var id: String?
     var text: String?
-    var priority: Priority?
+    var priority: Priority = .medium
     var dueDate: Date?
     
     init(from todoItem: TodoItem) {
