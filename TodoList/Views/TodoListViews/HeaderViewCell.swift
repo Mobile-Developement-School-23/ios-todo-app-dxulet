@@ -13,46 +13,45 @@ protocol HeaderViewCellDelegate: AnyObject {
 }
 
 class HeaderViewCell: UIView {
-    
+
     // MARK: - Properties
-    
+
     private lazy var doneCountLabel = makeDoneCountLabel()
     private lazy var showDoneItemsButton = makeShowDoneItemsButton()
-    
+
     private var fileCache = FileCache()
     weak var delegate: HeaderViewCellDelegate?
-    
+
     // MARK: - Init
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureUI()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func configure(doneCount: Int, showDoneItems: Bool) {
         doneCountLabel.text = "Выполнено - \(doneCount)"
         showDoneItemsButton.setTitle(showDoneItems ? "Скрыть" : "Показать", for: .normal)
     }
-    
+
     func updateDoneCount(_ count: Int) {
         doneCountLabel.text = "Выполнено - \(count)"
     }
-    
-    
+
     // MARK: - Lifecycle
-    
+
     private func configureUI() {
         backgroundColor = Colors.backPrimary.color
         [doneCountLabel, showDoneItemsButton].forEach { addSubview($0) }
         configureConstraints()
     }
-    
+
     private func configureConstraints() {
-        
+
         doneCountLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
             make.leading.equalToSuperview().offset(32)
@@ -65,9 +64,9 @@ class HeaderViewCell: UIView {
             make.bottom.equalToSuperview().offset(-12)
         }
     }
-    
+
     // MARK: - Private functions
-    
+
     private func makeDoneCountLabel() -> UILabel {
         let label = UILabel()
         label.font = GlobalConstants.subhead
@@ -75,7 +74,7 @@ class HeaderViewCell: UIView {
         label.textColor = Colors.labelTertiary.color
         return label
     }
-    
+
     private func makeShowDoneItemsButton() -> UIButton {
         let button = UIButton()
         button.setTitleColor(Colors.colorBlue.color, for: .normal)
@@ -86,9 +85,9 @@ class HeaderViewCell: UIView {
         button.addTarget(self, action: #selector(showDoneItemsButtonTapped), for: .touchUpInside)
         return button
     }
-    
+
     // MARK: - Selectors
-    
+
     @objc private func showDoneItemsButtonTapped(_ sender: UIButton) {
         sender.isSelected.toggle()
         delegate?.showDoneItemsButtonTapped(self, didSelectShowButton: sender.isSelected)

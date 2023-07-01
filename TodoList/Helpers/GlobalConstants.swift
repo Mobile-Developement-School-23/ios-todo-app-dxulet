@@ -16,9 +16,9 @@ enum GlobalConstants {
     static let subhead = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let subheadBold = UIFont.systemFont(ofSize: 15, weight: .bold)
     static let footnote = UIFont.systemFont(ofSize: 13, weight: .semibold)
-    
+
     static let padding: CGFloat = 16
     static let cornerRadius: CGFloat = 16
-    
+
     static let dividerColor: UIColor = .systemGray5
 }

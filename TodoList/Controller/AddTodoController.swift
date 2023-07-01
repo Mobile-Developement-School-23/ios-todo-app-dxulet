@@ -13,11 +13,11 @@ protocol AddTodoControllerDelegate: AnyObject {
 }
 
 class AddTodoController: UIViewController {
-    
+
     // MARK: - Properties
-    
+
     private var fileCache: FileCache = FileCache()
-    
+
     private enum Constants {
         static let cancelTitle = "Отменить"
         static let titleText = "Дело"
@@ -35,7 +35,7 @@ class AddTodoController: UIViewController {
         static let topBarInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: -16)
         static let stackViewWidth: CGFloat = -32
     }
-    
+
     private var item: TodoItem {
         didSet {
             presentationModel = AddTodoPresentationModel(from: item)
@@ -43,26 +43,26 @@ class AddTodoController: UIViewController {
     }
     private var presentationModel = AddTodoPresentationModel()
     weak var delegate: AddTodoControllerDelegate?
-    
+
     // MARK: - Init
-    
+
     init(_ item: TodoItem) {
         self.item = item
         super.init(nibName: nil, bundle: nil)
         updateVC(with: item)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Subviews
-    
+
     private lazy var topBar = makeTopBar()
     private lazy var textView = makeTextView()
     private lazy var addTodoView = makeAddTodoView()
     private lazy var stackView = makeStackView()
-    
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
@@ -71,7 +71,7 @@ class AddTodoController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    
+
     private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ class AddTodoController: UIViewController {
         button.addTarget(self, action: #selector(topBarButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.titleText
@@ -89,7 +89,7 @@ class AddTodoController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +101,7 @@ class AddTodoController: UIViewController {
         button.addTarget(self, action: #selector(topBarButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle(Constants.deleteTitle, for: .normal)
@@ -114,19 +114,19 @@ class AddTodoController: UIViewController {
         button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupView()
         setupKeyboard()
         setupObservers()
     }
-    
+
     // MARK: - Private Methods
-    
+
     private func setupColors() {
         view.backgroundColor = Colors.backPrimary.color
         textView.backgroundColor = Colors.backSecondary.color
@@ -135,39 +135,39 @@ class AddTodoController: UIViewController {
         [cancelButton, saveButton].forEach { $0.setTitleColor(Colors.colorBlue.color, for: .normal) }
         saveButton.setTitleColor(Colors.labelTertiary.color, for: .disabled)
     }
-    
+
     private func setupView() {
-        
+
         setupColors()
-        
+
         view.addSubview(topBar)
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
-        
+
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
-        
+
         NSLayoutConstraint.activate([
             topBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.topBarInsets.left),
             topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: Constants.topBarInsets.right),
             topBar.heightAnchor.constraint(equalToConstant: Constants.topBarHeight),
-            
+
             scrollView.topAnchor.constraint(equalTo: topBar.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
+
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: Constants.scrollViewInsets.left),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: Constants.scrollViewInsets.right),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: Constants.stackViewWidth),
-            
+
             textView.heightAnchor.constraint(greaterThanOrEqualToConstant: Constants.textViewHeight),
             deleteButton.heightAnchor.constraint(equalToConstant: Constants.containerViewHeight)
         ])
     }
-    
+
     private func setupObservers() {
         NotificationCenter.default.addObserver(
             self,
@@ -182,17 +182,17 @@ class AddTodoController: UIViewController {
             object: nil
         )
     }
-    
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         prepareViewsAccordingToOrientation()
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         prepareViewsAccordingToOrientation()
     }
-    
+
     private func prepareViewsAccordingToOrientation() {
         if traitCollection.verticalSizeClass == .compact {
             // landscape
@@ -204,21 +204,21 @@ class AddTodoController: UIViewController {
             deleteButton.isHidden = false
         }
     }
-    
+
     private func makeTextView() -> CustomTextView {
         let textView = CustomTextView()
         textView.customDelegate = self
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }
-    
+
     private func makeAddTodoView() -> AddTodoView {
         let view = AddTodoView(presentationModel: presentationModel)
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }
-    
+
     private func makeTopBar() -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: [
             cancelButton,
@@ -231,7 +231,7 @@ class AddTodoController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }
-    
+
     private func makeStackView() -> UIStackView {
         let stackView = UIStackView(arrangedSubviews: [
             textView,
@@ -241,17 +241,17 @@ class AddTodoController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = Constants.contentSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return stackView
     }
-    
+
     private func updateVC(with item: TodoItem) {
         textView.update(with: item.text)
         addTodoView.update(with: item)
     }
-    
+
     // MARK: - Selectors
-    
+
     @objc private func topBarButtonTapped(selector: UIButton) {
         switch selector {
         case cancelButton:
@@ -265,12 +265,12 @@ class AddTodoController: UIViewController {
             break
         }
     }
-    
+
     @objc private func deleteButtonTapped() {
         delegate?.addViewControllerDidDelete(self, item: item)
         dismiss(animated: true)
     }
-    
+
     @objc private func keyboardWillShow(notification: NSNotification) {
         guard
             let userInfo = notification.userInfo,
@@ -278,12 +278,12 @@ class AddTodoController: UIViewController {
         else {
             return
         }
-        
+
         let keyboardSize = nsValue.cgRectValue
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
         scrollView.contentInset = contentInsets
     }
-    
+
     @objc private func keyboardWillHide() {
         let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
@@ -293,7 +293,7 @@ class AddTodoController: UIViewController {
 // MARK: - CustomTextViewDelegate
 
 extension AddTodoController: CustomTextViewDelegate {
-    
+
     func didChangeText(_ text: String) {
         presentationModel.text = text
         saveButton.isEnabled = !text.isEmpty && text != Constants.placeholder
@@ -303,13 +303,12 @@ extension AddTodoController: CustomTextViewDelegate {
 // MARK: - AddTodoViewDelegate
 
 extension AddTodoController: AddTodoViewDelegate {
-    
+
     func didChangePriority(_ priority: Priority) {
         presentationModel.priority = priority
     }
-    
+
     func didChangeDeadline(_ deadline: Date?) {
         presentationModel.dueDate = deadline
     }
 }
-

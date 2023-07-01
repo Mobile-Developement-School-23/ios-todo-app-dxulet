@@ -24,8 +24,8 @@ enum Images {
 
 extension Images {
     var image: UIImage {
-        var image: UIImage? = nil
-        
+        var image: UIImage?
+
         switch self {
         case .plusCircle:
             image = UIImage(named: "plus_circle_24x24")
@@ -52,7 +52,7 @@ extension Images {
         case .showOn:
             image = UIImage(named: "show_on")
         }
-        
+
         return image ?? UIImage()
     }
 }

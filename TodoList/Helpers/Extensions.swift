@@ -13,7 +13,7 @@ extension UIViewController {
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
-    
+
     @objc private func didTapView() {
         view.endEditing(true)
     }
