@@ -29,7 +29,7 @@ struct TodoItem {
     let text: String
     let priority: Priority
     let deadline: Date?
-    let isCompleted: Bool
+    var isCompleted: Bool
     let createdAt: Date
     let changedAt: Date?
     

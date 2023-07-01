@@ -7,11 +7,15 @@
 
 import UIKit
 
+protocol AddTodoControllerDelegate: AnyObject {
+    func addViewControllerDidSave(_: AddTodoController, item: TodoItem)
+    func addViewControllerDidDelete(_: AddTodoController, item: TodoItem)
+}
+
 class AddTodoController: UIViewController {
     
     // MARK: - Properties
     
-    var didSaveItem: ((TodoItem) -> Void)?
     private var fileCache: FileCache = FileCache()
     
     private enum Constants {
@@ -22,6 +26,7 @@ class AddTodoController: UIViewController {
         static let alertTitle = "Успех"
         static let alertMessage = "Новое дело успешно сохранено"
         static let alertActionTitle = "Ок"
+        static let placeholder = "Что надо сделать?"
         static let contentSpacing: CGFloat = 16
         static let scrollViewInsets = UIEdgeInsets(top: 16, left: 16, bottom: 0, right: -16)
         static let topBarHeight: CGFloat = 50
@@ -31,14 +36,20 @@ class AddTodoController: UIViewController {
         static let stackViewWidth: CGFloat = -32
     }
     
-    private let item: TodoItem?
+    private var item: TodoItem {
+        didSet {
+            presentationModel = AddTodoPresentationModel(from: item)
+        }
+    }
     private var presentationModel = AddTodoPresentationModel()
+    weak var delegate: AddTodoControllerDelegate?
     
     // MARK: - Init
     
-    init(item: TodoItem? = nil) {
+    init(_ item: TodoItem) {
         self.item = item
         super.init(nibName: nil, bundle: nil)
+        updateVC(with: item)
     }
     
     required init?(coder: NSCoder) {
@@ -52,7 +63,7 @@ class AddTodoController: UIViewController {
     private lazy var addTodoView = makeAddTodoView()
     private lazy var stackView = makeStackView()
     
-    private let scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
@@ -61,7 +72,7 @@ class AddTodoController: UIViewController {
         return scrollView
     }()
     
-    private let cancelButton: UIButton = {
+    private lazy var cancelButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.titleLabel?.font = GlobalConstants.body
@@ -70,7 +81,7 @@ class AddTodoController: UIViewController {
         return button
     }()
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = Constants.titleText
         label.font = GlobalConstants.headline
@@ -79,7 +90,7 @@ class AddTodoController: UIViewController {
         return label
     }()
     
-    private let saveButton: UIButton = {
+    private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(Constants.saveTitle, for: .normal)
@@ -91,7 +102,7 @@ class AddTodoController: UIViewController {
         return button
     }()
     
-    private let deleteButton: UIButton = {
+    private lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle(Constants.deleteTitle, for: .normal)
         button.layer.cornerRadius = GlobalConstants.cornerRadius
@@ -108,12 +119,6 @@ class AddTodoController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        do {
-            try fileCache.load(from: "Items")
-        } catch {
-            print(error)
-        }
         
         setupView()
         setupKeyboard()
@@ -164,19 +169,41 @@ class AddTodoController: UIViewController {
     }
     
     private func setupObservers() {
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(keyboardWillShow),
-                name: UIResponder.keyboardWillShowNotification,
-                object: nil
-            )
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(keyboardWillHide),
-                name: UIResponder.keyboardWillHideNotification,
-                object: nil
-            )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        prepareViewsAccordingToOrientation()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        prepareViewsAccordingToOrientation()
+    }
+    
+    private func prepareViewsAccordingToOrientation() {
+        if traitCollection.verticalSizeClass == .compact {
+            // landscape
+            addTodoView.isHidden = true
+            deleteButton.isHidden = true
+        } else {
+            // normal
+            addTodoView.isHidden = false
+            deleteButton.isHidden = false
         }
+    }
     
     private func makeTextView() -> CustomTextView {
         let textView = CustomTextView()
@@ -186,7 +213,7 @@ class AddTodoController: UIViewController {
     }
     
     private func makeAddTodoView() -> AddTodoView {
-        let view = AddTodoView(item: item)
+        let view = AddTodoView(presentationModel: presentationModel)
         view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -218,58 +245,30 @@ class AddTodoController: UIViewController {
         return stackView
     }
     
+    private func updateVC(with item: TodoItem) {
+        textView.update(with: item.text)
+        addTodoView.update(with: item)
+    }
+    
     // MARK: - Selectors
     
     @objc private func topBarButtonTapped(selector: UIButton) {
-        let alert = UIAlertController(title: Constants.alertTitle, message: Constants.alertMessage, preferredStyle: .alert)
-        
         switch selector {
         case cancelButton:
-            print("Cancel button tapped")
-            // dismiss(animated: true)
+            dismiss(animated: true)
         case saveButton:
             guard let text = presentationModel.text else { return }
-            let todoItem = TodoItem(text: text, priority: presentationModel.priority, deadline: presentationModel.dueDate, isCompleted: false, createdAt: Date())
-            fileCache.add(todoItem)
-            do {
-                try fileCache.saveToJSONFile()
-                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
-                present(alert, animated: true)
-            } catch let error as FileCacheError {
-                switch error {
-                // TODO: - Localize
-                case .notFound:
-                    alert.title = "File Not Found"
-                    alert.message = "The specified file was not found."
-                case .notSupported:
-                    alert.title = "File Not Supported"
-                    alert.message = "The file format is not supported."
-                case .failedToRead:
-                    alert.title = "Failed to Read File"
-                    alert.message = "An error occurred while reading the file."
-                case .failedToWrite:
-                    alert.title = "Failed to Write File"
-                    alert.message = "An error occurred while writing the file."
-                }
-                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
-                present(alert, animated: true)
-            } catch {
-                // Handle other errors
-                alert.title = "Error"
-                alert.message = "An unknown error occurred."
-                alert.addAction(UIAlertAction(title: Constants.alertActionTitle, style: .default, handler: nil))
-                present(alert, animated: true)
-            }
+            let todoItem = TodoItem(id: item.id, text: text, priority: presentationModel.priority, deadline: presentationModel.dueDate, isCompleted: false, createdAt: Date())
+            delegate?.addViewControllerDidSave(self, item: todoItem)
+            dismiss(animated: true)
         default:
             break
         }
     }
-
-
     
     @objc private func deleteButtonTapped() {
-        //        presentationModel.deleteItem()
-        //        dismiss(animated: true)
+        delegate?.addViewControllerDidDelete(self, item: item)
+        dismiss(animated: true)
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
@@ -297,7 +296,8 @@ extension AddTodoController: CustomTextViewDelegate {
     
     func didChangeText(_ text: String) {
         presentationModel.text = text
-        saveButton.isEnabled = !text.isEmpty
+        saveButton.isEnabled = !text.isEmpty && text != Constants.placeholder
+        deleteButton.isEnabled = !text.isEmpty && text != Constants.placeholder
     }
 }
 // MARK: - AddTodoViewDelegate
@@ -308,7 +308,7 @@ extension AddTodoController: AddTodoViewDelegate {
         presentationModel.priority = priority
     }
     
-    func didChangeDeadline(_ deadline: Date) {
+    func didChangeDeadline(_ deadline: Date?) {
         presentationModel.dueDate = deadline
     }
 }

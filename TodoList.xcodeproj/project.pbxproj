@@ -10,6 +10,12 @@
 		527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3482A4989CC00C8B2FD /* Extensions.swift */; };
 		527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34B2A4ABB8100C8B2FD /* Colors.swift */; };
 		527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34D2A4AC64800C8B2FD /* DividerView.swift */; };
+		527DF3512A4ADC1800C8B2FD /* TodoItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3502A4ADC1800C8B2FD /* TodoItemCell.swift */; };
+		527DF3532A4ADF7800C8B2FD /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3522A4ADF7800C8B2FD /* Images.swift */; };
+		527DF3582A4AF3D100C8B2FD /* TodoListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3572A4AF3D100C8B2FD /* TodoListController.swift */; };
+		527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 527DF35A2A4D931500C8B2FD /* SnapKit */; };
+		527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */; };
+		527DF3602A4F9D3400C8B2FD /* FooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */; };
 		52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC12A445B5A0060758E /* AppDelegate.swift */; };
 		52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC32A445B5A0060758E /* SceneDelegate.swift */; };
 		52AF6FCB2A445B5B0060758E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52AF6FCA2A445B5B0060758E /* Assets.xcassets */; };
@@ -48,6 +54,11 @@
 		527DF3482A4989CC00C8B2FD /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		527DF34B2A4ABB8100C8B2FD /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		527DF34D2A4AC64800C8B2FD /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
+		527DF3502A4ADC1800C8B2FD /* TodoItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemCell.swift; sourceTree = "<group>"; };
+		527DF3522A4ADF7800C8B2FD /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		527DF3572A4AF3D100C8B2FD /* TodoListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListController.swift; sourceTree = "<group>"; };
+		527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
+		527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterViewCell.swift; sourceTree = "<group>"; };
 		52AF6FBE2A445B5A0060758E /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AF6FC12A445B5A0060758E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52AF6FC32A445B5A0060758E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,6 +111,28 @@
 			children = (
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		527DF34F2A4ADBF900C8B2FD /* AddTodoViews */ = {
+			isa = PBXGroup;
+			children = (
+				52AF70042A449C210060758E /* AddTodoView.swift */,
+				52AF70062A449CF80060758E /* PriorityView.swift */,
+				52AF700A2A4564250060758E /* DeadlineCalenarView.swift */,
+				52AF700C2A45C2F60060758E /* CustomTextView.swift */,
+				527DF34D2A4AC64800C8B2FD /* DividerView.swift */,
+			);
+			path = AddTodoViews;
+			sourceTree = "<group>";
+		};
+		527DF35C2A4F5B4100C8B2FD /* TodoListViews */ = {
+			isa = PBXGroup;
+			children = (
+				527DF3502A4ADC1800C8B2FD /* TodoItemCell.swift */,
+				527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */,
+				527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */,
+			);
+			path = TodoListViews;
 			sourceTree = "<group>";
 		};
 		52AF6FB52A445B5A0060758E = {
@@ -168,6 +202,7 @@
 				52AF70082A44A1A90060758E /* GlobalConstants.swift */,
 				527DF3482A4989CC00C8B2FD /* Extensions.swift */,
 				527DF34B2A4ABB8100C8B2FD /* Colors.swift */,
+				527DF3522A4ADF7800C8B2FD /* Images.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -175,11 +210,8 @@
 		52AF6FFD2A4499F70060758E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				52AF70042A449C210060758E /* AddTodoView.swift */,
-				52AF70062A449CF80060758E /* PriorityView.swift */,
-				52AF700A2A4564250060758E /* DeadlineCalenarView.swift */,
-				52AF700C2A45C2F60060758E /* CustomTextView.swift */,
-				527DF34D2A4AC64800C8B2FD /* DividerView.swift */,
+				527DF34F2A4ADBF900C8B2FD /* AddTodoViews */,
+				527DF35C2A4F5B4100C8B2FD /* TodoListViews */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +220,7 @@
 			isa = PBXGroup;
 			children = (
 				52AF70022A449BAC0060758E /* AddTodoController.swift */,
+				527DF3572A4AF3D100C8B2FD /* TodoListController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -226,6 +259,9 @@
 			dependencies = (
 			);
 			name = TodoList;
+			packageProductDependencies = (
+				527DF35A2A4D931500C8B2FD /* SnapKit */,
+			);
 			productName = TodoList;
 			productReference = 52AF6FBE2A445B5A0060758E /* TodoList.app */;
 			productType = "com.apple.product-type.application";
@@ -298,6 +334,9 @@
 				Base,
 			);
 			mainGroup = 52AF6FB52A445B5A0060758E;
+			packageReferences = (
+				527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			productRefGroup = 52AF6FBF2A445B5A0060758E /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -340,7 +379,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				52AF70072A449CF80060758E /* PriorityView.swift in Sources */,
+				527DF3582A4AF3D100C8B2FD /* TodoListController.swift in Sources */,
 				52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */,
+				527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */,
 				527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */,
 				52AF6FF22A445CF80060758E /* TodoItem.swift in Sources */,
 				52AF70052A449C210060758E /* AddTodoView.swift in Sources */,
@@ -351,7 +392,10 @@
 				527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */,
 				52AF700D2A45C2F60060758E /* CustomTextView.swift in Sources */,
 				52AF70092A44A1A90060758E /* GlobalConstants.swift in Sources */,
+				527DF3602A4F9D3400C8B2FD /* FooterViewCell.swift in Sources */,
 				52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */,
+				527DF3532A4ADF7800C8B2FD /* Images.swift in Sources */,
+				527DF3512A4ADC1800C8B2FD /* TodoItemCell.swift in Sources */,
 				52AF700B2A4564250060758E /* DeadlineCalenarView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,6 +717,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		527DF35A2A4D931500C8B2FD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 52AF6FB62A445B5A0060758E /* Project object */;
 }
