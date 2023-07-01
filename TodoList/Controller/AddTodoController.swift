@@ -194,7 +194,7 @@ class AddTodoController: UIViewController {
     }
 
     private func prepareViewsAccordingToOrientation() {
-        if traitCollection.verticalSizeClass == .compact {
+        if traitCollection.verticalSizeClass == .compact && textView.text != Constants.placeholder {
             // landscape
             addTodoView.isHidden = true
             deleteButton.isHidden = true
