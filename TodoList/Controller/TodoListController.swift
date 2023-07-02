@@ -7,6 +7,7 @@
 
 import UIKit
 import CocoaLumberjack
+import TodoModelsYandex
 
 class TodoListController: UIViewController {
 

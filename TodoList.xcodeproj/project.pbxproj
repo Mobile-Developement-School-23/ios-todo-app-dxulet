@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5251167D2A51656500D568FD /* Pods_TodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BB2EA80BDB53125FCF8FEA /* Pods_TodoList.framework */; };
+		5251168B2A516A9200D568FD /* TodoModelsYandex in Frameworks */ = {isa = PBXBuildFile; productRef = 5251168A2A516A9200D568FD /* TodoModelsYandex */; };
 		527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3482A4989CC00C8B2FD /* Extensions.swift */; };
 		527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34B2A4ABB8100C8B2FD /* Colors.swift */; };
 		527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34D2A4AC64800C8B2FD /* DividerView.swift */; };
@@ -24,8 +26,6 @@
 		52AF6FD92A445B5B0060758E /* TodoListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FD82A445B5B0060758E /* TodoListTests.swift */; };
 		52AF6FE32A445B5B0060758E /* TodoListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FE22A445B5B0060758E /* TodoListUITests.swift */; };
 		52AF6FE52A445B5B0060758E /* TodoListUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FE42A445B5B0060758E /* TodoListUITestsLaunchTests.swift */; };
-		52AF6FF22A445CF80060758E /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FF12A445CF80060758E /* TodoItem.swift */; };
-		52AF6FF42A445D740060758E /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FF32A445D740060758E /* FileCache.swift */; };
 		52AF70032A449BAC0060758E /* AddTodoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF70022A449BAC0060758E /* AddTodoController.swift */; };
 		52AF70052A449C210060758E /* AddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF70042A449C210060758E /* AddTodoView.swift */; };
 		52AF70072A449CF80060758E /* PriorityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF70062A449CF80060758E /* PriorityView.swift */; };
@@ -33,7 +33,6 @@
 		52AF700B2A4564250060758E /* DeadlineCalenarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF700A2A4564250060758E /* DeadlineCalenarView.swift */; };
 		52AF700D2A45C2F60060758E /* CustomTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF700C2A45C2F60060758E /* CustomTextView.swift */; };
 		52AF700F2A466F5F0060758E /* AddTodoPresentationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF700E2A466F5F0060758E /* AddTodoPresentationModel.swift */; };
-		B5DC27F6D14F72933AA05C55 /* Pods_TodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BB2EA80BDB53125FCF8FEA /* Pods_TodoList.framework */; };
 		D1553C4F4196171012DCB7A6 /* Pods_TodoListTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62B818232772081BA347DEF0 /* Pods_TodoListTests.framework */; };
 		EA926851B523D429137C79DB /* Pods_TodoList_TodoListUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2649D2974B623DD3FD1B47D4 /* Pods_TodoList_TodoListUITests.framework */; };
 /* End PBXBuildFile section */
@@ -75,8 +74,6 @@
 		52AF6FDE2A445B5B0060758E /* TodoListUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TodoListUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AF6FE22A445B5B0060758E /* TodoListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListUITests.swift; sourceTree = "<group>"; };
 		52AF6FE42A445B5B0060758E /* TodoListUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		52AF6FF12A445CF80060758E /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
-		52AF6FF32A445D740060758E /* FileCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
 		52AF70022A449BAC0060758E /* AddTodoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoController.swift; sourceTree = "<group>"; };
 		52AF70042A449C210060758E /* AddTodoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTodoView.swift; sourceTree = "<group>"; };
 		52AF70062A449CF80060758E /* PriorityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityView.swift; sourceTree = "<group>"; };
@@ -102,7 +99,8 @@
 				527DF3632A4FA72400C8B2FD /* CocoaLumberjack in Frameworks */,
 				527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */,
 				527DF3652A4FA72400C8B2FD /* CocoaLumberjackSwift in Frameworks */,
-				B5DC27F6D14F72933AA05C55 /* Pods_TodoList.framework in Frameworks */,
+				5251168B2A516A9200D568FD /* TodoModelsYandex in Frameworks */,
+				5251167D2A51656500D568FD /* Pods_TodoList.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +196,6 @@
 				52AF6FFF2A449A030060758E /* Controller */,
 				52AF6FFD2A4499F70060758E /* Views */,
 				52AF6FFB2A44999E0060758E /* Helpers */,
-				52AF6FFA2A44998B0060758E /* Utils */,
 				52AF6FCA2A445B5B0060758E /* Assets.xcassets */,
 				52AF6FCF2A445B5B0060758E /* Info.plist */,
 			);
@@ -220,14 +217,6 @@
 				52AF6FE42A445B5B0060758E /* TodoListUITestsLaunchTests.swift */,
 			);
 			path = TodoListUITests;
-			sourceTree = "<group>";
-		};
-		52AF6FFA2A44998B0060758E /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				52AF6FF32A445D740060758E /* FileCache.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		52AF6FFB2A44999E0060758E /* Helpers */ = {
@@ -262,7 +251,6 @@
 		52AF70002A449A090060758E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				52AF6FF12A445CF80060758E /* TodoItem.swift */,
 				52AF700E2A466F5F0060758E /* AddTodoPresentationModel.swift */,
 			);
 			path = Model;
@@ -309,6 +297,7 @@
 				527DF35A2A4D931500C8B2FD /* SnapKit */,
 				527DF3622A4FA72400C8B2FD /* CocoaLumberjack */,
 				527DF3642A4FA72400C8B2FD /* CocoaLumberjackSwift */,
+				5251168A2A516A9200D568FD /* TodoModelsYandex */,
 			);
 			productName = TodoList;
 			productReference = 52AF6FBE2A445B5A0060758E /* TodoList.app */;
@@ -387,6 +376,7 @@
 			packageReferences = (
 				527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */,
 				527DF3612A4FA72400C8B2FD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
+				525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */,
 			);
 			productRefGroup = 52AF6FBF2A445B5A0060758E /* Products */;
 			projectDirPath = "";
@@ -520,11 +510,9 @@
 				52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */,
 				527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */,
 				527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */,
-				52AF6FF22A445CF80060758E /* TodoItem.swift in Sources */,
 				52AF70052A449C210060758E /* AddTodoView.swift in Sources */,
 				52AF700F2A466F5F0060758E /* AddTodoPresentationModel.swift in Sources */,
 				52AF70032A449BAC0060758E /* AddTodoController.swift in Sources */,
-				52AF6FF42A445D740060758E /* FileCache.swift in Sources */,
 				527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */,
 				527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */,
 				52AF700D2A45C2F60060758E /* CustomTextView.swift in Sources */,
@@ -862,6 +850,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dxulet/TodoModelsYandex.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.2;
+			};
+		};
 		527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -881,6 +877,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5251168A2A516A9200D568FD /* TodoModelsYandex */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */;
+			productName = TodoModelsYandex;
+		};
 		527DF35A2A4D931500C8B2FD /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */;

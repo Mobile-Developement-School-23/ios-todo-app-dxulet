@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TodoModelsYandex
 
 protocol PriorityViewDelegate: AnyObject {
     func priorityChanged(_ priority: Priority)

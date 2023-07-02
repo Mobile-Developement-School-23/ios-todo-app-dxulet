@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import TodoModelsYandex
 
 protocol HeaderViewCellDelegate: AnyObject {
     func showDoneItemsButtonTapped(_: HeaderViewCell, didSelectShowButton isSelected: Bool)
