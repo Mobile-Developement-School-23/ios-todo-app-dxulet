@@ -9,7 +9,7 @@ import XCTest
 @testable import TodoList
 
 final class TodoListTests: XCTestCase {
-    
+
     func testParse() throws {
         let json: [String: Any] = [
             "id": "1",
@@ -20,9 +20,9 @@ final class TodoListTests: XCTestCase {
             "created_at": 1592052000,
             "changed_at": 1592052000
         ]
-        
+
         let item = TodoItem.parse(json: json)
-        
+
         XCTAssertNotNil(item)
         XCTAssertEqual(item?.id, "1")
         XCTAssertEqual(item?.text, "Test")
@@ -32,7 +32,7 @@ final class TodoListTests: XCTestCase {
         XCTAssertEqual(item?.createdAt, Date(timeIntervalSince1970: 1592052000))
         XCTAssertEqual(item?.changedAt, Date(timeIntervalSince1970: 1592052000))
     }
-    
+
     func testInitializer() {
         let id = "1"
         let text = "Test item"
@@ -41,9 +41,9 @@ final class TodoListTests: XCTestCase {
         let isCompleted = true
         let createdAt = Date()
         let changedAt = Date()
-        
+
         let item1 = TodoItem(id: id, text: text, priority: priority, deadline: deadline, isCompleted: isCompleted, createdAt: createdAt, changedAt: changedAt)
-        
+
         XCTAssertEqual(item1.id, id)
         XCTAssertEqual(item1.text, text)
         XCTAssertEqual(item1.priority, priority)
@@ -51,9 +51,9 @@ final class TodoListTests: XCTestCase {
         XCTAssertEqual(item1.isCompleted, isCompleted)
         XCTAssertEqual(item1.createdAt, createdAt)
         XCTAssertEqual(item1.changedAt, changedAt)
-        
+
         let item2 = TodoItem(text: text, priority: priority, deadline: Date(), isCompleted: isCompleted, createdAt: createdAt, changedAt: nil)
-        
+
         XCTAssertNotNil(item2.id)
         XCTAssertEqual(item2.text, text)
         XCTAssertEqual(item2.priority, priority)
@@ -62,8 +62,7 @@ final class TodoListTests: XCTestCase {
         XCTAssertEqual(item2.createdAt, createdAt)
         XCTAssertNil(item2.changedAt)
     }
-    
-    
+
     func testInvalidJSONParsing() {
         let invalidJSON: [String: Any] = [
             "id": 123,
@@ -74,26 +73,26 @@ final class TodoListTests: XCTestCase {
             "createdAt": 1676454946.0,
             "changedAt": [:]
         ]
-        
+
         let todoItem = TodoItem.parse(json: invalidJSON)
-        
+
         XCTAssertNil(todoItem)
-        
+
         let emptyJSON: [String: Any] = [:]
-        
+
         let emptyItem = TodoItem.parse(json: emptyJSON)
-        
+
         XCTAssertNil(emptyItem)
-        
+
         let missingFieldsJSON: [String: Any] = [
             "text": "Test",
             "isCompleted": true
         ]
-        
+
         let missingFieldsItem = TodoItem.parse(json: missingFieldsJSON)
-        
+
         XCTAssertNil(missingFieldsItem)
-        
+
         let wrongTypeJSON: [String: String] = [
             "id": "1",
             "text": "Test",
@@ -103,13 +102,12 @@ final class TodoListTests: XCTestCase {
             "createdAt": "1676454946",
             "changedAt": "1676454946"
         ]
-        
+
         let wrongTypeItem = TodoItem.parse(json: wrongTypeJSON)
-        
+
         XCTAssertNil(wrongTypeItem)
     }
-    
-    
+
     func testTodoItemJSONGeneration() {
         let todoItem = TodoItem(
             id: "789",
@@ -120,14 +118,14 @@ final class TodoListTests: XCTestCase {
             createdAt: Date(timeIntervalSince1970: 1676454946),
             changedAt: nil
         )
-        
+
         let generatedJSON = todoItem.json
-        
+
         guard let jsonDict = generatedJSON as? [String: Any] else {
             XCTFail("Generated JSON is not a dictionary")
             return
         }
-        
+
         XCTAssertEqual(jsonDict["id"] as? String, "789")
         XCTAssertEqual(jsonDict["text"] as? String, "Buy milk")
         XCTAssertEqual(jsonDict["priority"] as? String, "high")
@@ -136,7 +134,7 @@ final class TodoListTests: XCTestCase {
         XCTAssertEqual(jsonDict["created_at"] as? Int, 1676454946)
         XCTAssertNil(jsonDict["changed_at"])
     }
-    
+
     func testCSVGeneration() {
         let item = TodoItem(id: "1", text: "Test", priority: .low, deadline: Date(timeIntervalSince1970: 1676458546), isCompleted: true, createdAt: Date(timeIntervalSince1970: 1676454946), changedAt: Date(timeIntervalSince1970: 1676458546))
 
@@ -193,6 +191,4 @@ final class TodoListTests: XCTestCase {
 
         XCTAssertNil(TodoItem.parse(csv: invalidBoolValueCSV))
     }
-
-    
 }

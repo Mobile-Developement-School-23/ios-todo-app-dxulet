@@ -29,8 +29,8 @@ enum Colors {
 
 extension Colors {
     var color: UIColor {
-        var color: UIColor? = nil
-        
+        var color: UIColor?
+
         switch self {
         case .backElevated:
             color = UIColor(named: "back_elevated")
@@ -67,7 +67,7 @@ extension Colors {
         case .supportSeparator:
             color = UIColor(named: "support_separator")
         }
-        
+
         return color ?? UIColor()
     }
 }
