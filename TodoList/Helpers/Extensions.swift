@@ -27,7 +27,9 @@ extension URLSession {
     
     func dataTask(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {
         var task: URLSessionDataTask?
-        let onCancel = { task?.cancel() }
+        let onCancel: @Sendable () -> Void = { [weak task] in
+            task?.cancel()
+        }
         
         return try await withTaskCancellationHandler(
             operation: {
