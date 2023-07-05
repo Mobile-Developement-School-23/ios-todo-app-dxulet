@@ -47,7 +47,7 @@ final class TodoListTests: XCTestCase {
 
     func testDataWithURLRequestWithoutError() async throws {
         let request = URLRequest(url: fileURL)
-        let (data, response) = try await session.data(for: request)
+        let (data, response) = try await session.dataTask(for: request)
         let string = String(decoding: data, as: UTF8.self)
 
         XCTAssertEqual(string, fileContents)
@@ -59,7 +59,7 @@ final class TodoListTests: XCTestCase {
         let request = URLRequest(url: invalidURL)
 
         do {
-            _ = try await session.data(for: request)
+            _ = try await session.dataTask(for: request)
             XCTFail("Expected error to be thrown")
         } catch {
             verifyThatError(error, containsURL: invalidURL)
