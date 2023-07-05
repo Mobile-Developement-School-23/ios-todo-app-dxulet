@@ -6,19 +6,16 @@
 //
 
 import UIKit
-import CocoaLumberjack
-import CocoaLumberjackSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    let fileLogger: DDFileLogger = DDFileLogger()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        setupLogger()
+//        setupLogger()
 
         window = .init(windowScene: windowScene)
         window?.makeKeyAndVisible()
@@ -27,15 +24,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController(rootViewController: todoListViewController)
         window?.rootViewController = navigationController
 
-    }
-
-    private func setupLogger() {
-        DDLog.add(DDTTYLogger.sharedInstance!)
-
-        // File logger
-        fileLogger.rollingFrequency = TimeInterval(60*60*24)
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.add(fileLogger, with: .info)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

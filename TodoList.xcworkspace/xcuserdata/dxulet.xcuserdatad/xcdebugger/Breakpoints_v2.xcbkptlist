@@ -3,4 +3,54 @@
    uuid = "025F9E88-AD2C-4325-B8D9-F9986107F310"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B5D842D1-0365-46F8-8AD5-A07229B141A4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TodoList/Helpers/Extensions.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "dataTask(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B5D842D1-0365-46F8-8AD5-A07229B141A4 - 443fedfd9421e72f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Sendable () -&gt; () in __C.NSURLSession.dataTask(for: Foundation.URLRequest) async throws -&gt; (Foundation.Data, __C.NSURLResponse)"
+                  moduleName = "TodoList"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dxulet/Downloads/TodoList/TodoList/Helpers/Extensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "48">
+               </Location>
+               <Location
+                  uuid = "B5D842D1-0365-46F8-8AD5-A07229B141A4 - 443fedfd9421e72f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 @Sendable () -&gt; () in __C.NSURLSession.dataTask(for: Foundation.URLRequest) async throws -&gt; (Foundation.Data, __C.NSURLResponse)"
+                  moduleName = "TodoList"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dxulet/Downloads/TodoList/TodoList/Helpers/Extensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "36">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

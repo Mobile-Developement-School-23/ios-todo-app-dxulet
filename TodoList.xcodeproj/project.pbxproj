@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5251167D2A51656500D568FD /* Pods_TodoList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6BB2EA80BDB53125FCF8FEA /* Pods_TodoList.framework */; };
-		5251168B2A516A9200D568FD /* TodoModelsYandex in Frameworks */ = {isa = PBXBuildFile; productRef = 5251168A2A516A9200D568FD /* TodoModelsYandex */; };
+		525E599B2A549F020088BAA7 /* TodoModelsYandex in Frameworks */ = {isa = PBXBuildFile; productRef = 525E599A2A549F020088BAA7 /* TodoModelsYandex */; };
 		527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3482A4989CC00C8B2FD /* Extensions.swift */; };
 		527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34B2A4ABB8100C8B2FD /* Colors.swift */; };
 		527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34D2A4AC64800C8B2FD /* DividerView.swift */; };
@@ -18,8 +18,6 @@
 		527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 527DF35A2A4D931500C8B2FD /* SnapKit */; };
 		527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */; };
 		527DF3602A4F9D3400C8B2FD /* FooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */; };
-		527DF3632A4FA72400C8B2FD /* CocoaLumberjack in Frameworks */ = {isa = PBXBuildFile; productRef = 527DF3622A4FA72400C8B2FD /* CocoaLumberjack */; };
-		527DF3652A4FA72400C8B2FD /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 527DF3642A4FA72400C8B2FD /* CocoaLumberjackSwift */; };
 		52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC12A445B5A0060758E /* AppDelegate.swift */; };
 		52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC32A445B5A0060758E /* SceneDelegate.swift */; };
 		52AF6FCB2A445B5B0060758E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52AF6FCA2A445B5B0060758E /* Assets.xcassets */; };
@@ -96,10 +94,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				527DF3632A4FA72400C8B2FD /* CocoaLumberjack in Frameworks */,
+				525E599B2A549F020088BAA7 /* TodoModelsYandex in Frameworks */,
 				527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */,
-				527DF3652A4FA72400C8B2FD /* CocoaLumberjackSwift in Frameworks */,
-				5251168B2A516A9200D568FD /* TodoModelsYandex in Frameworks */,
 				5251167D2A51656500D568FD /* Pods_TodoList.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -295,9 +291,7 @@
 			name = TodoList;
 			packageProductDependencies = (
 				527DF35A2A4D931500C8B2FD /* SnapKit */,
-				527DF3622A4FA72400C8B2FD /* CocoaLumberjack */,
-				527DF3642A4FA72400C8B2FD /* CocoaLumberjackSwift */,
-				5251168A2A516A9200D568FD /* TodoModelsYandex */,
+				525E599A2A549F020088BAA7 /* TodoModelsYandex */,
 			);
 			productName = TodoList;
 			productReference = 52AF6FBE2A445B5A0060758E /* TodoList.app */;
@@ -375,8 +369,7 @@
 			mainGroup = 52AF6FB52A445B5A0060758E;
 			packageReferences = (
 				527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */,
-				527DF3612A4FA72400C8B2FD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
-				525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */,
+				525E59992A549F020088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */,
 			);
 			productRefGroup = 52AF6FBF2A445B5A0060758E /* Products */;
 			projectDirPath = "";
@@ -850,12 +843,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */ = {
+		525E59992A549F020088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/dxulet/TodoModelsYandex.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.2;
+				minimumVersion = 1.0.3;
 			};
 		};
 		527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
@@ -866,36 +859,18 @@
 				minimumVersion = 5.1.0;
 			};
 		};
-		527DF3612A4FA72400C8B2FD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.8.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5251168A2A516A9200D568FD /* TodoModelsYandex */ = {
+		525E599A2A549F020088BAA7 /* TodoModelsYandex */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 525116892A516A9200D568FD /* XCRemoteSwiftPackageReference "TodoModelsYandex" */;
+			package = 525E59992A549F020088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */;
 			productName = TodoModelsYandex;
 		};
 		527DF35A2A4D931500C8B2FD /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		527DF3622A4FA72400C8B2FD /* CocoaLumberjack */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 527DF3612A4FA72400C8B2FD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjack;
-		};
-		527DF3642A4FA72400C8B2FD /* CocoaLumberjackSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 527DF3612A4FA72400C8B2FD /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
-			productName = CocoaLumberjackSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
