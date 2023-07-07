@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import TodoModelsYandex
 @testable import TodoList
 
 final class TodoListTests: XCTestCase {
@@ -85,6 +86,34 @@ final class TodoListTests: XCTestCase {
         
         XCTAssertEqual(result, 0)
     }
+    
+    // MARK: - Network Service
+    
+    func testFetchTodos() async throws {
+        let service = NetworkingService(session: session, deviceID: "test")
+        let todos = try await service.fetchTodos()
+        
+        XCTAssertFalse(todos.isEmpty)
+    }
+    
+    func testAddTodoItem() async throws {
+        let service = NetworkingService(session: session, deviceID: "test")
+        let todoItem = TodoItem(
+            id: UUID().uuidString,
+            text: "Test",
+            priority: .low,
+            deadline: nil,
+            isCompleted: false,
+            createdAt: Date(),
+            changedAt: Date())
+        
+        let todos = try await service.fetchTodos().count
+        try await service.addTodoItem(todoItem)
+        let newTodos = try await service.fetchTodos().count
+        
+        XCTAssertFalse(todos >= newTodos)
+    }
+    
 }
 
 private extension TodoListTests {

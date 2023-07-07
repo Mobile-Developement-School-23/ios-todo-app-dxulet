@@ -18,6 +18,13 @@ class TodoListController: UIViewController {
 
     // MARK: - Properties
 
+    private let device: String = {
+        let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        return deviceID
+    }()
+    
+    private lazy var networkService = NetworkingService(deviceID: device)
+    
     private var items: [TodoItem] = [] {
         didSet {
             tableView.reloadData()
@@ -53,6 +60,12 @@ class TodoListController: UIViewController {
 
         configureUI()
         loadItems()
+        
+        Task {
+            let todos = try await networkService.fetchTodos()
+            print(todos)
+            print(networkService.revision)
+        }
     }
 
     // MARK: - Private
@@ -248,8 +261,10 @@ extension TodoListController: AddTodoControllerDelegate {
     }
 
     func addViewControllerDidSave(_: AddTodoController, item: TodoItem) {
-        fileCache.add(item)
-        saveItem()
+        Task {
+            print(networkService.revision)
+            try await networkService.addTodoItem(item)
+        }
     }
 }
 

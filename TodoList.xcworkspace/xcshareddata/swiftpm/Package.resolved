@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dxulet/TodoModelsYandex.git",
       "state" : {
-        "revision" : "815349f97839c489a61dd9d7bddeb557fa85ac43",
-        "version" : "1.0.3"
+        "revision" : "f34a809a516f72e0f9ee3a5d91d60e51ce4c48d1",
+        "version" : "1.0.5"
       }
     }
   ],

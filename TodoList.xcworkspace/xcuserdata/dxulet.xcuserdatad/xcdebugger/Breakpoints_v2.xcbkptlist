@@ -3,4 +3,54 @@
    uuid = "025F9E88-AD2C-4325-B8D9-F9986107F310"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6234D4A6-897A-4735-B786-244F43141782"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TodoList/Model/Networking Service/NetworkingService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
+            landmarkName = "decodeListBackend(from:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6234D4A6-897A-4735-B786-244F43141782 - 628d1b0cc30116f7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TodoList.NetworkingService.decodeListBackend(from: Foundation.Data) throws -&gt; Swift.Array&lt;TodoModelsYandex.TodoItem&gt;"
+                  moduleName = "TodoList"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dxulet/Downloads/TodoList/TodoList/Model/Networking%20Service/NetworkingService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "328">
+               </Location>
+               <Location
+                  uuid = "6234D4A6-897A-4735-B786-244F43141782 - 628d1b0cc30116f7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TodoList.NetworkingService.decodeListBackend(from: Foundation.Data) throws -&gt; Swift.Array&lt;TodoModelsYandex.TodoItem&gt;"
+                  moduleName = "TodoList"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dxulet/Downloads/TodoList/TodoList/Model/Networking%20Service/NetworkingService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "92"
+                  endingLineNumber = "92"
+                  offsetFromSymbolStart = "280">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>
