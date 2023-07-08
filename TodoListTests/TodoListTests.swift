@@ -113,7 +113,6 @@ final class TodoListTests: XCTestCase {
         
         XCTAssertFalse(todos >= newTodos)
     }
-    
 }
 
 private extension TodoListTests {

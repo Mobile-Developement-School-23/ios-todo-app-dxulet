@@ -55,7 +55,8 @@ class NetworkingService: NetworkingServiceProvider {
     }
     
     func updateTodoItem(_ todoItem: TodoItem) async throws {
-        let body = try JSONEncoder().encode(toTodoItemBackend(todoItem))
+        let item = ElementBackend(element: toTodoItemBackend(todoItem))
+        let body = try JSONEncoder().encode(item)
         let url = try RequestProcessor.makeURL(id: "/\(todoItem.id)")
         let request = try RequestProcessor.makeRequest(method: "PUT", url: url, body: body, revision: revision)
         try await RequestProcessor.performRequest(request)
