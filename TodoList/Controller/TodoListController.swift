@@ -65,10 +65,11 @@ class TodoListController: UIViewController {
     
     // MARK: - Private
     
+    @MainActor
     func fetchDataNetwork() {
-        Task {
+        Task(priority: .userInitiated) {
             do {
-                let itemsFromNetwork = try await networkService.fetchTodos()
+                items = try await networkService.fetchTodos()
                 self.isDirty = false
             } catch {
                 self.isDirty = true
@@ -76,15 +77,16 @@ class TodoListController: UIViewController {
         }
     }
     
-    func deleteToDoNetwork(todoItem: TodoItem) {
+    @MainActor
+    func deleteToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
         }
         
-        Task {
+        Task(priority: .userInitiated) {
             do {
-                _ = try await networkService.deleteTodoItem(todoItem)
+                _ = try await networkService.deleteTodoItem(item)
                 self.isDirty = false
             } catch {
                 self.isDirty = true
@@ -92,13 +94,14 @@ class TodoListController: UIViewController {
         }
     }
     
+    @MainActor
     func addToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
         }
         
-        Task {
+        Task(priority: .userInitiated) {
             do {
                 _ = try await networkService.addTodoItem(item)
                 self.isDirty = false
@@ -108,13 +111,14 @@ class TodoListController: UIViewController {
         }
     }
     
+    @MainActor
     func changeToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
         }
         
-        Task {
+        Task(priority: .userInitiated) {
             do {
                 _ = try await networkService.updateTodoItem(item)
                 self.isDirty = false
@@ -153,7 +157,7 @@ class TodoListController: UIViewController {
             make.top.equalTo(headerView.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -181,18 +185,17 @@ class TodoListController: UIViewController {
         headerView.updateDoneCount(doneCount)
     }
     
-    private func makeTableView() -> UITableView {
-        let tableView = UITableView()
-        
+    private func makeTableView() -> ConfiguredTableView {
+        let tableView = ConfiguredTableView()
         tableView.register(TodoItemCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
-        tableView.delegate = self
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.estimatedRowHeight = 56
-        tableView.separatorStyle = .none
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.layer.cornerRadius = 16
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-        
         return tableView
     }
     
@@ -245,8 +248,7 @@ extension TodoListController: UITableViewDelegate {
                                            title: "Выполнено") { (_, _, _) in
             var item = self.items[indexPath.row]
             item.isCompleted.toggle()
-            self.fileCache.add(item)
-            self.saveItem()
+            self.changeToDoNetwork(item: item)
         }
         
         completed.image = UIImage(systemName: "checkmark.circle.fill")
@@ -259,9 +261,8 @@ extension TodoListController: UITableViewDelegate {
         
         let delete = UIContextualAction(style: .destructive,
                                         title: "Удалить") { (_, _, _) in
-            let id = self.items[indexPath.row].id
-            self.fileCache.remove(id)
-            self.saveItem()
+            let item = self.items[indexPath.row]
+            self.deleteToDoNetwork(item: item)
         }
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = Colors.colorRed.color
@@ -300,15 +301,11 @@ extension TodoListController: UITableViewDataSource {
 
 extension TodoListController: AddTodoControllerDelegate {
     func addViewControllerDidDelete(_: AddTodoController, item: TodoItem) {
-        fileCache.remove(item.id)
-        saveItem()
+        deleteToDoNetwork(item: item)
     }
     
     func addViewControllerDidSave(_: AddTodoController, item: TodoItem) {
-        Task {
-            print(networkService.revision)
-            try await networkService.addTodoItem(item)
-        }
+        addToDoNetwork(item: item)
     }
 }
 
@@ -317,8 +314,7 @@ extension TodoListController: TodoItemCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         var item = items[indexPath.row]
         item.isCompleted = isSelected
-        fileCache.add(item)
-        saveItem()
+        changeToDoNetwork(item: item)
     }
 }
 
