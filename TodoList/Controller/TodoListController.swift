@@ -6,19 +6,26 @@
 //
 
 import UIKit
-import CocoaLumberjack
 import TodoModelsYandex
 
 class TodoListController: UIViewController {
-
+    
     private enum Constants {
         static let reuseIdentifier: String = "TodoItemCell"
         static let headerReuseIdentifier: String = "HeaderViewCell"
         static let placeholder: String = "Что надо сделать?"
     }
-
+    
     // MARK: - Properties
-
+    
+    private let device: String = {
+        let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+        return deviceID
+    }()
+    
+    private lazy var networkService = NetworkingService(deviceID: device)
+    private var isDirty = true
+    
     private var items: [TodoItem] = [] {
         didSet {
             tableView.reloadData()
@@ -29,9 +36,9 @@ class TodoListController: UIViewController {
             tableView.reloadData()
         }
     }
-
+    
     private var doneCount: Int = 0
-
+    
     private var filteredItems: [TodoItem] {
         if showDoneItems {
             return items
@@ -39,55 +46,108 @@ class TodoListController: UIViewController {
             return items.filter { !$0.isCompleted }
         }
     }
-
+    
     private var fileCache = FileCache()
-
+    
     private lazy var headerView = makeHeaderView()
     private lazy var tableView = makeTableView()
     private lazy var addButton = makeAddButton()
     private lazy var footerView = makeFooterView()
-
+    
     // MARK: - Lifecycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configureUI()
-        loadItems()
+        fetchDataNetwork()
     }
-
+    
     // MARK: - Private
-
-    private func loadItems() {
-        do {
-            try fileCache.load(from: "Items")
-            items = Array(fileCache.items.values)
-        } catch {
-            print("DEBUG: Error while loading from JSON file")
+    
+    @MainActor
+    func fetchDataNetwork() {
+        Task(priority: .userInitiated) {
+            do {
+                items = try await networkService.fetchTodos()
+                self.isDirty = false
+            } catch {
+                self.isDirty = true
+            }
         }
     }
-
+    
+    @MainActor
+    func deleteToDoNetwork(item: TodoItem) {
+        
+        if self.isDirty {
+            fetchDataNetwork()
+        }
+        
+        Task(priority: .userInitiated) {
+            do {
+                _ = try await networkService.deleteTodoItem(item)
+                self.isDirty = false
+            } catch {
+                self.isDirty = true
+            }
+        }
+    }
+    
+    @MainActor
+    func addToDoNetwork(item: TodoItem) {
+        
+        if self.isDirty {
+            fetchDataNetwork()
+        }
+        
+        Task(priority: .userInitiated) {
+            do {
+                _ = try await networkService.addTodoItem(item)
+                self.isDirty = false
+            } catch {
+                self.isDirty = true
+            }
+        }
+    }
+    
+    @MainActor
+    func changeToDoNetwork(item: TodoItem) {
+        
+        if self.isDirty {
+            fetchDataNetwork()
+        }
+        
+        Task(priority: .userInitiated) {
+            do {
+                _ = try await networkService.updateTodoItem(item)
+                self.isDirty = false
+            } catch {
+                self.isDirty = true
+            }
+        }
+    }
     private func configureUI() {
         [headerView, tableView, addButton].forEach { view.addSubview($0) }
         configureColors()
         configureNavigationBar()
         configureConstraints()
     }
-
+    
     private func configureColors() {
         navigationController?.navigationBar.backgroundColor = Colors.backPrimary.color
         view.backgroundColor = Colors.backPrimary.color
         tableView.backgroundColor = Colors.backSecondary.color
     }
-
+    
     private func configureNavigationBar() {
         title = "Мои Дела" // TODO: Localize
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }
-
+    
     private func configureConstraints() {
-
+        
         headerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.equalTo(view.safeAreaLayoutGuide)
@@ -97,49 +157,48 @@ class TodoListController: UIViewController {
             make.top.equalTo(headerView.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalToSuperview()
         }
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
     }
-
+    
     // MARK: - Factories
-
+    
     private func makeHeaderView() -> HeaderViewCell {
         let headerView = HeaderViewCell()
         headerView.configure(doneCount: doneCount, showDoneItems: showDoneItems)
         headerView.delegate = self
         return headerView
     }
-
+    
     private func makeFooterView() -> FooterViewCell {
         let footerView = FooterViewCell()
         footerView.delegate = self
         return footerView
     }
-
+    
     private func updateDoneCount() {
         doneCount = items.filter { $0.isCompleted }.count
         headerView.updateDoneCount(doneCount)
     }
-
-    private func makeTableView() -> UITableView {
-        let tableView = UITableView()
-
+    
+    private func makeTableView() -> ConfiguredTableView {
+        let tableView = ConfiguredTableView()
         tableView.register(TodoItemCell.self, forCellReuseIdentifier: Constants.reuseIdentifier)
-        tableView.delegate = self
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 100, right: 0)
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.estimatedRowHeight = 56
-        tableView.separatorStyle = .none
-        tableView.rowHeight = UITableView.automaticDimension
         tableView.layer.cornerRadius = 16
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-
         return tableView
     }
-
+    
     private func makeAddButton() -> UIButton {
         let button = UIButton()
         button.setImage(Images.addLarge.image, for: .normal)
@@ -147,17 +206,17 @@ class TodoListController: UIViewController {
         button.imageView?.contentMode = .scaleAspectFill
         return button
     }
-
+    
     // MARK: - Selectors
-
+    
     @objc private func addButtonTapped() {
         let controller = AddTodoController(TodoItem(text: Constants.placeholder, priority: .medium, isCompleted: false, createdAt: Date()))
         controller.delegate = self
         present(controller, animated: true)
     }
-
+    
     // MARK: - Helpers
-
+    
     private func saveItem() {
         do {
             try fileCache.saveToJSONFile()
@@ -171,45 +230,43 @@ class TodoListController: UIViewController {
 // MARK: - UITableViewDelegate
 
 extension TodoListController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row]
         let controller = AddTodoController(item)
         controller.delegate = self
         present(controller, animated: true)
     }
-
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return footerView
     }
-
+    
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard !items.isEmpty else { return nil }
         let completed = UIContextualAction(style: .normal,
                                            title: "Выполнено") { (_, _, _) in
             var item = self.items[indexPath.row]
             item.isCompleted.toggle()
-            self.fileCache.add(item)
-            self.saveItem()
+            self.changeToDoNetwork(item: item)
         }
-
+        
         completed.image = UIImage(systemName: "checkmark.circle.fill")
         completed.backgroundColor = Colors.colorGreen.color
-
+        
         return UISwipeActionsConfiguration(actions: [completed])
     }
-
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-
+        
         let delete = UIContextualAction(style: .destructive,
                                         title: "Удалить") { (_, _, _) in
-            let id = self.items[indexPath.row].id
-            self.fileCache.remove(id)
-            self.saveItem()
+            let item = self.items[indexPath.row]
+            self.deleteToDoNetwork(item: item)
         }
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = Colors.colorRed.color
-
+        
         let info = UIContextualAction(style: .normal,
                                       title: "Инфо") { (_, _, _) in
             let item = self.items[indexPath.row]
@@ -219,7 +276,7 @@ extension TodoListController: UITableViewDelegate {
         }
         info.image = UIImage(systemName: "info.circle.fill")
         info.backgroundColor = Colors.colorGrayLight.color
-
+        
         return UISwipeActionsConfiguration(actions: [delete, info])
     }
 }
@@ -227,13 +284,13 @@ extension TodoListController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 
 extension TodoListController: UITableViewDataSource {
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         doneCount = filteredItems.filter({$0.isCompleted}).count
         updateDoneCount()
         return filteredItems.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier, for: indexPath) as! TodoItemCell
         cell.configure(with: AddTodoPresentationModel(from: filteredItems[indexPath.row]))
@@ -244,13 +301,11 @@ extension TodoListController: UITableViewDataSource {
 
 extension TodoListController: AddTodoControllerDelegate {
     func addViewControllerDidDelete(_: AddTodoController, item: TodoItem) {
-        fileCache.remove(item.id)
-        saveItem()
+        deleteToDoNetwork(item: item)
     }
-
+    
     func addViewControllerDidSave(_: AddTodoController, item: TodoItem) {
-        fileCache.add(item)
-        saveItem()
+        addToDoNetwork(item: item)
     }
 }
 
@@ -259,8 +314,7 @@ extension TodoListController: TodoItemCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         var item = items[indexPath.row]
         item.isCompleted = isSelected
-        fileCache.add(item)
-        saveItem()
+        changeToDoNetwork(item: item)
     }
 }
 
