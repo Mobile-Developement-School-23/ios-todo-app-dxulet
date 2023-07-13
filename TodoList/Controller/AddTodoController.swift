@@ -18,6 +18,7 @@ class AddTodoController: UIViewController {
     // MARK: - Properties
 
     private var fileCache: FileCache = FileCache()
+    private let coreDataStack: CoreDataStack = .init(modelName: "FileCacheData")
 
     private enum Constants {
         static let cancelTitle = "Отменить"

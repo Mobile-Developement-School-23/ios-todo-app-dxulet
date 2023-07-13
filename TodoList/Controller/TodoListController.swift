@@ -18,6 +18,8 @@ class TodoListController: UIViewController {
     
     // MARK: - Properties
     
+    private let coreDataManager = CoreDataManager(modelName: "FileCacheData")
+    
     private let device: String = {
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
         return deviceID
@@ -60,14 +62,32 @@ class TodoListController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        fetchDataNetwork()
+        fetchData()
     }
     
     // MARK: - Private
     
-    @MainActor
-    func fetchDataNetwork() {
-        Task(priority: .userInitiated) {
+    private func fetchData() {
+        items = coreDataManager.fetch()
+    }
+    
+    private func deleteTodoItem(item: TodoItem) {
+        coreDataManager.delete(item)
+        fetchData()
+    }
+    
+    private func addTodoItem(item: TodoItem) {
+        coreDataManager.save(item)
+        fetchData()
+    }
+    
+    private func updateTodoItem(item: TodoItem) {
+        coreDataManager.update(item)
+        fetchData()
+    }
+    
+    private func fetchDataNetwork() {
+        Task {
             do {
                 items = try await networkService.fetchTodos()
                 self.isDirty = false
@@ -77,8 +97,7 @@ class TodoListController: UIViewController {
         }
     }
     
-    @MainActor
-    func deleteToDoNetwork(item: TodoItem) {
+    private func deleteToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
@@ -94,8 +113,7 @@ class TodoListController: UIViewController {
         }
     }
     
-    @MainActor
-    func addToDoNetwork(item: TodoItem) {
+    private func addToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
@@ -111,22 +129,23 @@ class TodoListController: UIViewController {
         }
     }
     
-    @MainActor
-    func changeToDoNetwork(item: TodoItem) {
+    private func changeToDoNetwork(item: TodoItem) {
         
         if self.isDirty {
             fetchDataNetwork()
         }
         
-        Task(priority: .userInitiated) {
+        Task {
             do {
                 _ = try await networkService.updateTodoItem(item)
+                _ = try await networkService.fetchTodos()
                 self.isDirty = false
             } catch {
                 self.isDirty = true
             }
         }
     }
+    
     private func configureUI() {
         [headerView, tableView, addButton].forEach { view.addSubview($0) }
         configureColors()
@@ -248,7 +267,8 @@ extension TodoListController: UITableViewDelegate {
                                            title: "Выполнено") { (_, _, _) in
             var item = self.items[indexPath.row]
             item.isCompleted.toggle()
-            self.changeToDoNetwork(item: item)
+            self.updateDoneCount()
+            self.updateTodoItem(item: item)
         }
         
         completed.image = UIImage(systemName: "checkmark.circle.fill")
@@ -262,7 +282,7 @@ extension TodoListController: UITableViewDelegate {
         let delete = UIContextualAction(style: .destructive,
                                         title: "Удалить") { (_, _, _) in
             let item = self.items[indexPath.row]
-            self.deleteToDoNetwork(item: item)
+            self.deleteTodoItem(item: item)
         }
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = Colors.colorRed.color
@@ -301,11 +321,15 @@ extension TodoListController: UITableViewDataSource {
 
 extension TodoListController: AddTodoControllerDelegate {
     func addViewControllerDidDelete(_: AddTodoController, item: TodoItem) {
-        deleteToDoNetwork(item: item)
+        deleteTodoItem(item: item)
     }
     
     func addViewControllerDidSave(_: AddTodoController, item: TodoItem) {
-        addToDoNetwork(item: item)
+        if items.filter({$0.id == item.id}).isEmpty {
+            addTodoItem(item: item)
+        } else {
+            updateTodoItem(item: item)
+        }
     }
 }
 
@@ -314,7 +338,7 @@ extension TodoListController: TodoItemCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         var item = items[indexPath.row]
         item.isCompleted = isSelected
-        changeToDoNetwork(item: item)
+        updateTodoItem(item: item)
     }
 }
 
