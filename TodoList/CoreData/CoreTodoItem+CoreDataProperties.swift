@@ -1,5 +1,5 @@
 //
-//  TodoItem+CoreDataProperties.swift
+//  CoreTodoItem+CoreDataProperties.swift
 //  TodoList
 //
 //  Created by Daulet Ashikbayev on 13.07.2023.

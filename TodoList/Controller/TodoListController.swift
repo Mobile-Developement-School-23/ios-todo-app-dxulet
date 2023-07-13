@@ -18,14 +18,15 @@ class TodoListController: UIViewController {
     
     // MARK: - Properties
     
+    private var fileCache = FileCache()
     private let coreDataManager = CoreDataManager(modelName: "FileCacheData")
+    private lazy var networkService = NetworkingService(deviceID: device)
     
     private let device: String = {
         let deviceID = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
         return deviceID
     }()
     
-    private lazy var networkService = NetworkingService(deviceID: device)
     private var isDirty = true
     
     private var items: [TodoItem] = [] {
@@ -49,8 +50,6 @@ class TodoListController: UIViewController {
         }
     }
     
-    private var fileCache = FileCache()
-    
     private lazy var headerView = makeHeaderView()
     private lazy var tableView = makeTableView()
     private lazy var addButton = makeAddButton()
@@ -62,10 +61,32 @@ class TodoListController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        fetchData()
+        // fetchData() // CoreData
+        fetchSQLData() // SQLite
     }
     
-    // MARK: - Private
+    // MARK: - SQLite
+    
+    private func fetchSQLData() {
+        items = fileCache.loadFromDB()
+    }
+    
+    private func deleteTodoItemSQL(item: TodoItem) {
+        fileCache.removeFromDB(item)
+        fetchSQLData()
+    }
+    
+    private func addTodoItemSQL(item: TodoItem) {
+        fileCache.addToDB(item)
+        fetchSQLData()
+    }
+    
+    private func updateTodoItemSQL(item: TodoItem) {
+        fileCache.updateDB(item)
+        fetchSQLData()
+    }
+    
+    // MARK: - CoreData
     
     private func fetchData() {
         items = coreDataManager.fetch()
@@ -73,18 +94,20 @@ class TodoListController: UIViewController {
     
     private func deleteTodoItem(item: TodoItem) {
         coreDataManager.delete(item)
-        fetchData()
+//        fetchData()
     }
     
     private func addTodoItem(item: TodoItem) {
         coreDataManager.save(item)
-        fetchData()
+//        fetchData()
     }
     
     private func updateTodoItem(item: TodoItem) {
         coreDataManager.update(item)
-        fetchData()
+//        fetchData()
     }
+    
+    // MARK: - Networking
     
     private func fetchDataNetwork() {
         Task {
@@ -138,7 +161,6 @@ class TodoListController: UIViewController {
         Task {
             do {
                 _ = try await networkService.updateTodoItem(item)
-                _ = try await networkService.fetchTodos()
                 self.isDirty = false
             } catch {
                 self.isDirty = true
@@ -202,6 +224,7 @@ class TodoListController: UIViewController {
     private func updateDoneCount() {
         doneCount = items.filter { $0.isCompleted }.count
         headerView.updateDoneCount(doneCount)
+        
     }
     
     private func makeTableView() -> ConfiguredTableView {
@@ -268,7 +291,8 @@ extension TodoListController: UITableViewDelegate {
             var item = self.items[indexPath.row]
             item.isCompleted.toggle()
             self.updateDoneCount()
-            self.updateTodoItem(item: item)
+            self.updateTodoItem(item: item) // CoreData
+            self.updateTodoItemSQL(item: item) // SQLite
         }
         
         completed.image = UIImage(systemName: "checkmark.circle.fill")
@@ -283,6 +307,7 @@ extension TodoListController: UITableViewDelegate {
                                         title: "Удалить") { (_, _, _) in
             let item = self.items[indexPath.row]
             self.deleteTodoItem(item: item)
+            self.deleteTodoItemSQL(item: item)
         }
         delete.image = UIImage(systemName: "trash.fill")
         delete.backgroundColor = Colors.colorRed.color
@@ -321,14 +346,17 @@ extension TodoListController: UITableViewDataSource {
 
 extension TodoListController: AddTodoControllerDelegate {
     func addViewControllerDidDelete(_: AddTodoController, item: TodoItem) {
-        deleteTodoItem(item: item)
+        deleteTodoItem(item: item) // CoreData
+        deleteTodoItemSQL(item: item) // SQLite
     }
     
     func addViewControllerDidSave(_: AddTodoController, item: TodoItem) {
         if items.filter({$0.id == item.id}).isEmpty {
-            addTodoItem(item: item)
+            addTodoItem(item: item) // CoreData
+            addTodoItemSQL(item: item) // SQLite
         } else {
-            updateTodoItem(item: item)
+            updateTodoItem(item: item) // CoreData
+            updateTodoItemSQL(item: item) // SQLite
         }
     }
 }
@@ -338,7 +366,8 @@ extension TodoListController: TodoItemCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         var item = items[indexPath.row]
         item.isCompleted = isSelected
-        updateTodoItem(item: item)
+        updateTodoItem(item: item) // CoreData
+        updateTodoItemSQL(item: item) // SQLite
     }
 }
 

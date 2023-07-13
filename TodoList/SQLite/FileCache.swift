@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SQLite
 import TodoModelsYandex
 
-public enum FileCacheError: Error {
+private enum FileCacheError: Error {
     case notFound
     case notSupported
     case failedToRead
@@ -26,15 +27,15 @@ final class FileCache {
         print(Constants.documentDirectory)
     }
 
-    public func add(_ item: TodoItem) {
+    func add(_ item: TodoItem) {
         items[item.id] = item
     }
 
-    public func remove(_ id: String) {
+    func remove(_ id: String) {
         items[id] = nil
     }
 
-    public func saveToJSONFile() throws {
+    func saveToJSONFile() throws {
         let fileURL = Constants.documentDirectory[0].appendingPathComponent("Items.json")
 
         guard
@@ -50,7 +51,7 @@ final class FileCache {
         try? jsonData.write(to: fileURL)
     }
 
-    public func load(from file: String) throws {
+    func load(from file: String) throws {
         guard let directory = Constants.documentDirectory.first else {
             throw FileCacheError.notFound
         }
@@ -68,7 +69,7 @@ final class FileCache {
         }
     }
 
-    public func saveCSV(to file: String) throws {
+    func saveCSV(to file: String) throws {
         let fileManager = FileManager.default
         guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             throw FileCacheError.notFound
@@ -79,7 +80,7 @@ final class FileCache {
         try csvString.write(to: path, atomically: true, encoding: .utf8)
     }
 
-    public func loadCSV(from file: String) throws {
+    func loadCSV(from file: String) throws {
         let fileManager = FileManager.default
         guard let directory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first else {
             throw FileCacheError.notFound
@@ -94,3 +95,27 @@ final class FileCache {
         }
     }
 }
+
+// MARK: - SQLite implementation
+
+extension FileCache {
+    func addToDB(_ item: TodoItem) {
+        SQLiteManager.shared.insert(item: item)
+    }
+    
+    func removeFromDB(_ item: TodoItem) {
+        SQLiteManager.shared.delete(item: item)
+    }
+    
+    func loadFromDB() -> [TodoItem] {
+        let items = SQLiteManager.shared.fetch()
+        self.items = items.reduce(into: [:]) { res, item in
+            res[item.id] = item
+        }
+        return items
+    }
+    
+    func updateDB(_ item: TodoItem) {
+        SQLiteManager.shared.update(item: item)
+    }
+ }
