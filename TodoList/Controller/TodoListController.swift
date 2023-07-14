@@ -34,6 +34,7 @@ class TodoListController: UIViewController {
             tableView.reloadData()
         }
     }
+    
     private var showDoneItems: Bool = false {
         didSet {
             tableView.reloadData()
@@ -94,17 +95,17 @@ class TodoListController: UIViewController {
     
     private func deleteTodoItem(item: TodoItem) {
         coreDataManager.delete(item)
-//        fetchData()
+        //        fetchData()
     }
     
     private func addTodoItem(item: TodoItem) {
         coreDataManager.save(item)
-//        fetchData()
+        //        fetchData()
     }
     
     private func updateTodoItem(item: TodoItem) {
         coreDataManager.update(item)
-//        fetchData()
+        //        fetchData()
     }
     
     // MARK: - Networking
@@ -194,12 +195,14 @@ class TodoListController: UIViewController {
             make.leading.equalTo(view.safeAreaLayoutGuide)
             make.trailing.equalTo(view.safeAreaLayoutGuide)
         }
+        
         tableView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide)
         }
+        
         addButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
@@ -224,7 +227,6 @@ class TodoListController: UIViewController {
     private func updateDoneCount() {
         doneCount = items.filter { $0.isCompleted }.count
         headerView.updateDoneCount(doneCount)
-        
     }
     
     private func makeTableView() -> ConfiguredTableView {
@@ -281,7 +283,7 @@ extension TodoListController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return footerView
+        footerView
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
