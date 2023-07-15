@@ -49,11 +49,21 @@
 		<key>TodoList.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>5</integer>
+			<integer>4</integer>
+		</dict>
+		<key>TodoListSwiftUI.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>528CCB4B2A62971F00CF24E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>52AF6FBD2A445B5A0060758E</key>
 		<dict>
 			<key>primary</key>

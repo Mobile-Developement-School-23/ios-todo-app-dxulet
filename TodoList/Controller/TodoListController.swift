@@ -200,7 +200,7 @@ class TodoListController: UIViewController {
             make.top.equalTo(headerView.snp.bottom)
             make.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             make.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(addButton.snp.top).offset(-20)
         }
         
         addButton.snp.makeConstraints { make in

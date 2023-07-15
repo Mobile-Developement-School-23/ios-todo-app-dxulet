@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Images {
+public enum Images {
     case plusCircle
     case radioButtonHighPriority
     case radioButtonOff
