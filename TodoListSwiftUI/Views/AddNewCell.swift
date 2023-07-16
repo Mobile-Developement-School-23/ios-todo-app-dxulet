@@ -15,9 +15,6 @@ struct AddNewCell: View {
                 .font(Fonts.body)
                 .foregroundColor(Colors.labelTertiary.color)
         }
-        .onTapGesture {
-            print("add new item")
-        }
     }
 }
 

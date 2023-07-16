@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct TodoListView: View {
+    
+    @State var isAddItemPresented = false
+    
     var body: some View {
-        
         NavigationView {
             List {
                 Section {
@@ -19,6 +21,9 @@ struct TodoListView: View {
     
                     .padding(.vertical, 8)
                     AddNewCell()
+                        .onTapGesture {
+                            isAddItemPresented.toggle()
+                        }
                 } header: {
                     HStack {
                         Text("Выполнено — 0")
@@ -41,11 +46,14 @@ struct TodoListView: View {
         }
         .overlay(
             Button(action: {
-                // Action to be performed when the plus button is tapped
+                isAddItemPresented.toggle()
             }) {
                 Images.addLarge.image
             }, alignment: .bottom
         )
+        .sheet(isPresented: $isAddItemPresented) {
+            AddItemView()
+        }
     }
 }
 
