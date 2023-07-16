@@ -72,7 +72,7 @@ class NetworkingService: NetworkingServiceProvider {
     }
     
     // MARK: - Helpers
-    private func toTodoItemBackend(_ todoItem: TodoItem) -> TodoItemBackend {
+    private func toTodoItemBackend(_ todoItem: TodoModelsYandex.TodoItem) -> TodoItemBackend {
         return TodoItemBackend(
             id: todoItem.id,
             text: todoItem.text,

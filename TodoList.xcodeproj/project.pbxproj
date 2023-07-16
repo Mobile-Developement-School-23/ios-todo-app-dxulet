@@ -13,7 +13,6 @@
 		525E59A32A56E5550088BAA7 /* TodoItemBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525E59A22A56E5550088BAA7 /* TodoItemBackend.swift */; };
 		525E59A52A5720620088BAA7 /* ElementBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525E59A42A5720620088BAA7 /* ElementBackend.swift */; };
 		525E59A72A5720D20088BAA7 /* ListBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525E59A62A5720D20088BAA7 /* ListBackend.swift */; };
-		525E59AD2A58720E0088BAA7 /* TodoModelsYandex in Frameworks */ = {isa = PBXBuildFile; productRef = 525E59AC2A58720E0088BAA7 /* TodoModelsYandex */; };
 		527DF3492A4989CC00C8B2FD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF3482A4989CC00C8B2FD /* Extensions.swift */; };
 		527DF34C2A4ABB8100C8B2FD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34B2A4ABB8100C8B2FD /* Colors.swift */; };
 		527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF34D2A4AC64800C8B2FD /* DividerView.swift */; };
@@ -24,6 +23,15 @@
 		527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */; };
 		527DF3602A4F9D3400C8B2FD /* FooterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */; };
 		5283EDC32A5AB76900563536 /* ConfiguredTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5283EDC22A5AB76900563536 /* ConfiguredTableView.swift */; };
+		528CCB212A5ED9B100CF24E9 /* FileCacheData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB1F2A5ED9B100CF24E9 /* FileCacheData.xcdatamodeld */; };
+		528CCB2C2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB2A2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataClass.swift */; };
+		528CCB2D2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB2B2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataProperties.swift */; };
+		528CCB302A5FC05300CF24E9 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB2F2A5FC05300CF24E9 /* CoreDataStack.swift */; };
+		528CCB342A5FD02D00CF24E9 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB332A5FD02D00CF24E9 /* CoreDataManager.swift */; };
+		528CCB3C2A601FAE00CF24E9 /* FileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB3B2A601FAE00CF24E9 /* FileCache.swift */; };
+		528CCB422A6022FD00CF24E9 /* SQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 528CCB412A6022FD00CF24E9 /* SQLite */; };
+		528CCB442A6024B400CF24E9 /* SQLiteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CCB432A6024B400CF24E9 /* SQLiteManager.swift */; };
+		528CCB472A60571700CF24E9 /* TodoModelsYandex in Frameworks */ = {isa = PBXBuildFile; productRef = 528CCB462A60571700CF24E9 /* TodoModelsYandex */; };
 		52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC12A445B5A0060758E /* AppDelegate.swift */; };
 		52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52AF6FC32A445B5A0060758E /* SceneDelegate.swift */; };
 		52AF6FCB2A445B5B0060758E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52AF6FCA2A445B5B0060758E /* Assets.xcassets */; };
@@ -74,6 +82,13 @@
 		527DF35D2A4F5B5C00C8B2FD /* HeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
 		527DF35F2A4F9D3400C8B2FD /* FooterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterViewCell.swift; sourceTree = "<group>"; };
 		5283EDC22A5AB76900563536 /* ConfiguredTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfiguredTableView.swift; sourceTree = "<group>"; };
+		528CCB202A5ED9B100CF24E9 /* FileCacheData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FileCacheData.xcdatamodel; sourceTree = "<group>"; };
+		528CCB2A2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoreTodoItem+CoreDataClass.swift"; path = "TodoList/CoreData/CoreTodoItem+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		528CCB2B2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "CoreTodoItem+CoreDataProperties.swift"; path = "TodoList/CoreData/CoreTodoItem+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
+		528CCB2F2A5FC05300CF24E9 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
+		528CCB332A5FD02D00CF24E9 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		528CCB3B2A601FAE00CF24E9 /* FileCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileCache.swift; sourceTree = "<group>"; };
+		528CCB432A6024B400CF24E9 /* SQLiteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteManager.swift; sourceTree = "<group>"; };
 		52AF6FBE2A445B5A0060758E /* TodoList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TodoList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52AF6FC12A445B5A0060758E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		52AF6FC32A445B5A0060758E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,9 +121,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				525E59AD2A58720E0088BAA7 /* TodoModelsYandex in Frameworks */,
+				528CCB422A6022FD00CF24E9 /* SQLite in Frameworks */,
 				527DF35B2A4D931500C8B2FD /* SnapKit in Frameworks */,
 				5251167D2A51656500D568FD /* Pods_TodoList.framework in Frameworks */,
+				528CCB472A60571700CF24E9 /* TodoModelsYandex in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,13 +180,6 @@
 			path = "Presentation Model";
 			sourceTree = "<group>";
 		};
-		527DF3472A48ACEB00C8B2FD /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		527DF34F2A4ADBF900C8B2FD /* AddTodoViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +201,27 @@
 				5283EDC22A5AB76900563536 /* ConfiguredTableView.swift */,
 			);
 			path = TodoListViews;
+			sourceTree = "<group>";
+		};
+		528CCB2E2A5FBFDB00CF24E9 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				528CCB1F2A5ED9B100CF24E9 /* FileCacheData.xcdatamodeld */,
+				528CCB2A2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataClass.swift */,
+				528CCB2B2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataProperties.swift */,
+				528CCB2F2A5FC05300CF24E9 /* CoreDataStack.swift */,
+				528CCB332A5FD02D00CF24E9 /* CoreDataManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		528CCB3D2A6020FC00CF24E9 /* SQLite */ = {
+			isa = PBXGroup;
+			children = (
+				528CCB3B2A601FAE00CF24E9 /* FileCache.swift */,
+				528CCB432A6024B400CF24E9 /* SQLiteManager.swift */,
+			);
+			path = SQLite;
 			sourceTree = "<group>";
 		};
 		52AF6FB52A445B5A0060758E = {
@@ -219,7 +249,8 @@
 		52AF6FC02A445B5A0060758E /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
-				527DF3472A48ACEB00C8B2FD /* Data */,
+				528CCB3D2A6020FC00CF24E9 /* SQLite */,
+				528CCB2E2A5FBFDB00CF24E9 /* CoreData */,
 				52AF70012A449A1D0060758E /* App */,
 				52AF70002A449A090060758E /* Model */,
 				52AF6FFF2A449A030060758E /* Controller */,
@@ -325,7 +356,8 @@
 			name = TodoList;
 			packageProductDependencies = (
 				527DF35A2A4D931500C8B2FD /* SnapKit */,
-				525E59AC2A58720E0088BAA7 /* TodoModelsYandex */,
+				528CCB412A6022FD00CF24E9 /* SQLite */,
+				528CCB462A60571700CF24E9 /* TodoModelsYandex */,
 			);
 			productName = TodoList;
 			productReference = 52AF6FBE2A445B5A0060758E /* TodoList.app */;
@@ -403,7 +435,8 @@
 			mainGroup = 52AF6FB52A445B5A0060758E;
 			packageReferences = (
 				527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */,
-				525E59AB2A58720E0088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */,
+				528CCB402A6022FD00CF24E9 /* XCRemoteSwiftPackageReference "SQLite.swift" */,
+				528CCB452A60571700CF24E9 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */,
 			);
 			productRefGroup = 52AF6FBF2A445B5A0060758E /* Products */;
 			projectDirPath = "";
@@ -532,11 +565,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				528CCB2C2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataClass.swift in Sources */,
 				52AF70072A449CF80060758E /* PriorityView.swift in Sources */,
 				525E599E2A56DA4A0088BAA7 /* NetworkingServiceProvider.swift in Sources */,
 				527DF3582A4AF3D100C8B2FD /* TodoListController.swift in Sources */,
+				528CCB2D2A5FBFC100CF24E9 /* CoreTodoItem+CoreDataProperties.swift in Sources */,
 				52AF6FC22A445B5A0060758E /* AppDelegate.swift in Sources */,
 				527DF35E2A4F5B5C00C8B2FD /* HeaderViewCell.swift in Sources */,
+				528CCB302A5FC05300CF24E9 /* CoreDataStack.swift in Sources */,
 				527DF34E2A4AC64800C8B2FD /* DividerView.swift in Sources */,
 				525E59A72A5720D20088BAA7 /* ListBackend.swift in Sources */,
 				52AF70052A449C210060758E /* AddTodoView.swift in Sources */,
@@ -551,8 +587,12 @@
 				52AF70092A44A1A90060758E /* GlobalConstants.swift in Sources */,
 				527DF3602A4F9D3400C8B2FD /* FooterViewCell.swift in Sources */,
 				52AF6FC42A445B5A0060758E /* SceneDelegate.swift in Sources */,
+				528CCB212A5ED9B100CF24E9 /* FileCacheData.xcdatamodeld in Sources */,
 				525E59A12A56E4EC0088BAA7 /* NetworkingService.swift in Sources */,
 				527DF3532A4ADF7800C8B2FD /* Images.swift in Sources */,
+				528CCB342A5FD02D00CF24E9 /* CoreDataManager.swift in Sources */,
+				528CCB3C2A601FAE00CF24E9 /* FileCache.swift in Sources */,
+				528CCB442A6024B400CF24E9 /* SQLiteManager.swift in Sources */,
 				527DF3512A4ADC1800C8B2FD /* TodoItemCell.swift in Sources */,
 				52AF700B2A4564250060758E /* DeadlineCalenarView.swift in Sources */,
 			);
@@ -885,14 +925,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		525E59AB2A58720E0088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dxulet/TodoModelsYandex.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.5;
-			};
-		};
 		527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -901,20 +933,54 @@
 				minimumVersion = 5.1.0;
 			};
 		};
+		528CCB402A6022FD00CF24E9 /* XCRemoteSwiftPackageReference "SQLite.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stephencelis/SQLite.swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.14.1;
+			};
+		};
+		528CCB452A60571700CF24E9 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dxulet/TodoModelsYandex.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		525E59AC2A58720E0088BAA7 /* TodoModelsYandex */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 525E59AB2A58720E0088BAA7 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */;
-			productName = TodoModelsYandex;
-		};
 		527DF35A2A4D931500C8B2FD /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 527DF3592A4D931500C8B2FD /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
+		528CCB412A6022FD00CF24E9 /* SQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 528CCB402A6022FD00CF24E9 /* XCRemoteSwiftPackageReference "SQLite.swift" */;
+			productName = SQLite;
+		};
+		528CCB462A60571700CF24E9 /* TodoModelsYandex */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 528CCB452A60571700CF24E9 /* XCRemoteSwiftPackageReference "TodoModelsYandex" */;
+			productName = TodoModelsYandex;
+		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		528CCB1F2A5ED9B100CF24E9 /* FileCacheData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				528CCB202A5ED9B100CF24E9 /* FileCacheData.xcdatamodel */,
+			);
+			currentVersion = 528CCB202A5ED9B100CF24E9 /* FileCacheData.xcdatamodel */;
+			path = FileCacheData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 52AF6FB62A445B5A0060758E /* Project object */;
 }

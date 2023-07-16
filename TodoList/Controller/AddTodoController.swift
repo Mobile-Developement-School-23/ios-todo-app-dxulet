@@ -18,6 +18,7 @@ class AddTodoController: UIViewController {
     // MARK: - Properties
 
     private var fileCache: FileCache = FileCache()
+    private let coreDataStack: CoreDataStack = .init(modelName: "FileCacheData")
 
     private enum Constants {
         static let cancelTitle = "Отменить"
@@ -37,11 +38,7 @@ class AddTodoController: UIViewController {
         static let stackViewWidth: CGFloat = -32
     }
 
-    private var item: TodoItem {
-        didSet {
-            presentationModel = AddTodoPresentationModel(from: item)
-        }
-    }
+    private var item: TodoItem
     private var presentationModel = AddTodoPresentationModel()
     weak var delegate: AddTodoControllerDelegate?
 
@@ -49,6 +46,7 @@ class AddTodoController: UIViewController {
 
     init(_ item: TodoItem) {
         self.item = item
+        presentationModel = AddTodoPresentationModel(from: item)
         super.init(nibName: nil, bundle: nil)
         updateVC(with: item)
     }

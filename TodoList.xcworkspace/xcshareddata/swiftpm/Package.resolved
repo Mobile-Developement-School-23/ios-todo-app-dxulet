@@ -10,12 +10,21 @@
       }
     },
     {
+      "identity" : "sqlite.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/stephencelis/SQLite.swift.git",
+      "state" : {
+        "revision" : "7a2e3cd27de56f6d396e84f63beefd0267b55ccb",
+        "version" : "0.14.1"
+      }
+    },
+    {
       "identity" : "todomodelsyandex",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/dxulet/TodoModelsYandex.git",
       "state" : {
-        "revision" : "f34a809a516f72e0f9ee3a5d91d60e51ce4c48d1",
-        "version" : "1.0.5"
+        "revision" : "1a09d675335cb399a4582897f028be403e5c16c4",
+        "version" : "1.0.6"
       }
     }
   ],
