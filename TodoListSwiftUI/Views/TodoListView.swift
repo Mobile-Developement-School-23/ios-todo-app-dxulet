@@ -24,6 +24,30 @@ struct TodoListView: View {
                                 self.selectedItem = item
                                 selectedItemPresented.toggle()
                             }
+                            .swipeActions(edge: .leading) {
+                                Button {
+                                    print("Favorite")
+                                } label: {
+                                    Image(systemName: "checkmark.circle.fill")
+                                }
+                                .tint(Colors.colorGreen.color)
+                            }
+                            .swipeActions(edge: .trailing) {
+                                Button {
+                                    print("Delete")
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                                .tint(Colors.colorRed.color)
+                                
+                                Button {
+                                    self.selectedItem = item
+                                    selectedItemPresented.toggle()
+                                } label: {
+                                    Image(systemName: "info.circle.fill")
+                                }
+                                .tint(Colors.colorGrayLight.color)
+                            }
                     }
                     .padding(.vertical, 8)
                     AddNewCell()
