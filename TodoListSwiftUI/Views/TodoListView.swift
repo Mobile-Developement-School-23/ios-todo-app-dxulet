@@ -9,7 +9,10 @@ import SwiftUI
 
 struct TodoListView: View {
     
+    @State var selectedItemPresented = false
     @State var isAddItemPresented = false
+    @State var selectedItem = TodoItem()
+    @State var item = TodoItem()
     
     var body: some View {
         NavigationView {
@@ -17,8 +20,11 @@ struct TodoListView: View {
                 Section {
                     ForEach(MockItems.items) { item in
                         TodoItemCell(item: item, itemManager: ItemManager(item: item))
+                            .onTapGesture {
+                                self.selectedItem = item
+                                selectedItemPresented.toggle()
+                            }
                     }
-    
                     .padding(.vertical, 8)
                     AddNewCell()
                         .onTapGesture {
@@ -52,7 +58,11 @@ struct TodoListView: View {
             }, alignment: .bottom
         )
         .sheet(isPresented: $isAddItemPresented) {
-            AddItemView()
+            AddItemView(item: $item)
+        }
+        
+        .sheet(isPresented: $selectedItemPresented) {
+            AddItemView(item: $selectedItem)
         }
     }
 }

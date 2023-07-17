@@ -10,11 +10,12 @@ import SwiftUI
 struct AddItemView: View {
     
     @Environment(\.dismiss) var dismiss
+    @Binding var item: TodoItem
     
     var body: some View {
         NavigationView {
             List {
-                TextField("Что надо сделать?", text: .constant(""))
+                TextField("Что надо сделать?", text: $item.text)
                     .frame(minHeight: 120, alignment: .topLeading)
                 Section {
                     VStack(alignment: .leading) {
@@ -23,10 +24,10 @@ struct AddItemView: View {
                                 .font(Fonts.body)
                                 .foregroundColor(Colors.labelPrimary.color)
                             Spacer()
-                            Picker(selection: .constant(2), label: Text("Picker")) {
-                                Images.priorityLow.image.tag(1)
-                                Text("нет").tag(2)
-                                Images.priorityHigh.image.tag(3)
+                            Picker(selection: $item.priority, label: Text("Picker")) {
+                                Images.priorityLow.image.tag(Priority.low)
+                                Text("нет").tag(Priority.medium)
+                                Images.priorityHigh.image.tag(Priority.high)
                             }
                             .pickerStyle(.segmented)
                             .frame(width: 150)
@@ -41,7 +42,7 @@ struct AddItemView: View {
                     }
                     .disabled(true)
                 }
-                .frame(maxWidth: .infinity, minHeight: 56, maxHeight: 56, alignment: .center)
+                .frame(maxWidth: .infinity, minHeight: 40)
             }
             .scrollContentBackground(.hidden)
             .background(Colors.backPrimary.color)
@@ -68,7 +69,9 @@ struct AddItemView: View {
 }
 
 struct AddItemView_Previews: PreviewProvider {
+    @State static var item = MockItems.items[0]
+    
     static var previews: some View {
-        AddItemView()
+        AddItemView(item: $item)
     }
 }

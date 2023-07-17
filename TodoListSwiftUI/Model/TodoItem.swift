@@ -25,14 +25,14 @@ public enum TodoItemKeys {
 
 public struct TodoItem: Identifiable {
     public let id: String
-    public let text: String
-    public let priority: Priority
-    public let deadline: Date?
+    public var text: String
+    public var priority: Priority
+    public var deadline: Date?
     public var isCompleted: Bool
     public let createdAt: Date
-    public let changedAt: Date?
+    public var changedAt: Date?
     
-    public init(id: String = UUID().uuidString, text: String, priority: Priority, deadline: Date? = nil, isCompleted: Bool, createdAt: Date, changedAt: Date? = nil) {
+    public init(id: String = UUID().uuidString, text: String = "", priority: Priority = .medium, deadline: Date? = nil, isCompleted: Bool = false, createdAt: Date = Date(), changedAt: Date? = nil) {
         self.id = id
         self.text = text
         self.priority = priority
