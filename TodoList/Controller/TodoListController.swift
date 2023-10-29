@@ -62,8 +62,8 @@ class TodoListController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        // fetchData() // CoreData
-        fetchSQLData() // SQLite
+        fetchData() // CoreData
+//        fetchSQLData() // SQLite
     }
     
     // MARK: - SQLite
@@ -168,6 +168,8 @@ class TodoListController: UIViewController {
             }
         }
     }
+    
+    // MARK: - UI Actions
     
     private func configureUI() {
         [headerView, tableView, addButton].forEach { view.addSubview($0) }
